@@ -478,391 +478,460 @@
         <div id="tab-training" class="tab-content">
             <div class="card">
                 <h3>Entraînement</h3>
-                <nav class="bottom-nav">
-                    <div class="nav-item active" onclick="switchTab('dashboard')">
-                        <span class="nav-icon">🏠</span>
-                        <span>Accueil</span>
-                    </div>
-                    <div class="nav-item" onclick="switchTab('training')">
-                        <span class="nav-icon">🏋️</span>
-                        <span>Sport</span>
-                    </div>
-                    <div class="nav-item" onclick="switchTab('profile')">
-                        <span class="nav-icon">👤</span>
-                        <span>Profil</span>
-                    </div>
-                </nav>
+                <p>Programme à venir...</p>
+            </div>
+        </div>
 
-                <script>
-                    // --- DATA ---
-                    const SAISONS = {
-                        automne: { nom: 'Automne', mois: [9, 10, 11], emoji: '🍂', fruits: ['Pomme', 'Raisin', 'Poire'], legumes: ['Courge', 'Carotte', 'Chou'] },
-                        hiver: { nom: 'Hiver', mois: [12, 1, 2], emoji: '❄️', fruits: ['Orange', 'Kiwi'], legumes: ['Poireau', 'Endive'] },
-                        printemps: { nom: 'Printemps', mois: [3, 4, 5], emoji: '🌸', fruits: ['Fraise', 'Cerise'], legumes: ['Asperge', 'Radis'] },
-                        ete: { nom: 'Été', mois: [6, 7, 8], emoji: '☀️', fruits: ['Melon', 'Pêche'], legumes: ['Tomate', 'Poivron'] }
-                    };
+        <!-- PROFILE TAB -->
+        <div id="tab-profile" class="tab-content">
+            <div class="card">
+                <h3>Configuration Semaine Type</h3>
+                <p style="font-size:13px; color:var(--text-light); margin-bottom:15px;">Cochez vos jours d'entraînement
+                    habituels :</p>
+                <div id="config-jours-container" style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
+                </div>
 
-                    const PLAN_HYBRIDE = {
-                        dateDebut: localStorage.getItem('dateDebutProgramme') || '2024-01-01',
-                        semaines: {}
-                    };
-                    for (let i = 1; i <= 10; i++) {
-                        PLAN_HYBRIDE.semaines['S' + i] = {
-                            nom: i <= 4 ? 'Phase Adaptation' : 'Phase Intensive',
-                            calories: { training: 2800, repos: 2400 },
-                            macros: {
-                                training: { P: 200, G: 300, L: 80 },
-                                repos: { P: 200, G: 200, L: 90 }
-                            }
-                        };
+                <h4 style="margin-bottom:10px; color:var(--text-main);">Date de début du programme</h4>
+                <div style="display:flex; gap:10px;">
+                    <input type="date" id="date-debut-input" onchange="updateDateDebut()"
+                        style="padding:10px; border:1px solid #dfe6e9; border-radius:12px; font-family:'Nunito'; flex:1;">
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Préférences Alimentaires</h3>
+                <p style="font-size:13px; color:var(--text-light); margin-bottom:15px;">Vos choix par défaut pour gagner
+                    du temps :</p>
+
+                <div style="margin-bottom:15px;">
+                    <label style="font-size:14px; font-weight:600; display:block; margin-bottom:5px;">Collation Training
+                        (15:45)</label>
+                    <select id="pref-collation-training" onchange="savePreference('collation-training', this.value)"
+                        style="width:100%; padding:10px; border-radius:10px; border:1px solid #dfe6e9;">
+                        <option value="">-- Choisir --</option>
+                        <option value="A">Option A - Clean (Whey + Avoine)</option>
+                        <option value="B">Option B - Pressé (HiPro + Banane)</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom:15px;">
+                    <label style="font-size:14px; font-weight:600; display:block; margin-bottom:5px;">Dîner Training
+                        (19:30)</label>
+                    <select id="pref-diner-training" onchange="savePreference('diner-training', this.value)"
+                        style="width:100%; padding:10px; border-radius:10px; border:1px solid #dfe6e9;">
+                        <option value="">-- Choisir --</option>
+                        <option value="A">Option A - Saumon</option>
+                        <option value="B">Option B - Poulet</option>
+                        <option value="C">Option C - Œufs</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom:15px;">
+                    <label style="font-size:14px; font-weight:600; display:block; margin-bottom:5px;">Collation Repos
+                        (16:00)</label>
+                    <select id="pref-collation-repos" onchange="savePreference('collation-repos', this.value)"
+                        style="width:100%; padding:10px; border-radius:10px; border:1px solid #dfe6e9;">
+                        <option value="">-- Choisir --</option>
+                        <option value="A">Option A - Plaisir (Pain + Beurre Cacahuète)</option>
+                        <option value="B">Option B - Santé (Skyr + Amandes)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Stack Suppléments</h3>
+                <div id="supplements-container"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('dashboard')">
+            <span class="nav-icon">🏠</span>
+            <span>Accueil</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('training')">
+            <span class="nav-icon">🏋️</span>
+            <span>Sport</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('profile')">
+            <span class="nav-icon">👤</span>
+            <span>Profil</span>
+        </div>
+    </nav>
+
+    <script>
+        // --- DATA ---
+        const SAISONS = {
+            automne: { nom: 'Automne', mois: [9, 10, 11], emoji: '🍂', fruits: ['Pomme', 'Raisin', 'Poire'], legumes: ['Courge', 'Carotte', 'Chou'] },
+            hiver: { nom: 'Hiver', mois: [12, 1, 2], emoji: '❄️', fruits: ['Orange', 'Kiwi'], legumes: ['Poireau', 'Endive'] },
+            printemps: { nom: 'Printemps', mois: [3, 4, 5], emoji: '🌸', fruits: ['Fraise', 'Cerise'], legumes: ['Asperge', 'Radis'] },
+            ete: { nom: 'Été', mois: [6, 7, 8], emoji: '☀️', fruits: ['Melon', 'Pêche'], legumes: ['Tomate', 'Poivron'] }
+        };
+
+        const PLAN_HYBRIDE = {
+            dateDebut: localStorage.getItem('dateDebutProgramme') || '2024-01-01',
+            semaines: {}
+        };
+        for (let i = 1; i <= 10; i++) {
+            PLAN_HYBRIDE.semaines['S' + i] = {
+                nom: i <= 4 ? 'Phase Adaptation' : 'Phase Intensive',
+                calories: { training: 2800, repos: 2400 },
+                macros: {
+                    training: { P: 200, G: 300, L: 80 },
+                    repos: { P: 200, G: 200, L: 90 }
+                }
+            };
+        }
+
+        const MENUS_BASE = {
+            matin: {
+                nom: '🌅 ROUTINE MATIN (À JEUN)',
+                heure: '07:30',
+                details: [
+                    '💧 500ml Eau + Jus 1/2 citron',
+                    '☕ Café Noir (Sans sucre)',
+                    '💊 Créatine : 5g (Indispensable)'
+                ]
+            },
+            training: {
+                repas: [
+                    {
+                        id: 'repas1_train',
+                        nom: '🕛 REPAS 1 - Rupture Jeûne',
+                        heure: '12:00',
+                        calories: 900,
+                        macros: { P: 60, G: 90, L: 30 },
+                        desc: 'Le plus gros repas. Protéines + Glucides + Légumes.',
+                        complements: ['Vitamine D3 + K2', 'Multivitamine', 'Oméga-3 (sauf si poisson)', 'Berbérine'],
+                        assiette: [
+                            '🍗 Protéine (170g) : Poulet / Poisson Blanc / Steak 5%',
+                            '🍚 Féculent (270g cuit) : Riz Basmati / Pâtes / Patates',
+                            '🥦 Légumes (300g) : Brocolis / Haricots / Courgettes',
+                            '🫒 Lipides : 20ml Huile Olive (Crue)',
+                            '🍎 Fruit : 1 Pomme ou Poire'
+                        ]
+                    },
+                    {
+                        id: 'repas2_train',
+                        nom: '🕒 REPAS 2 - Post-Training',
+                        heure: '15:45',
+                        calories: 600,
+                        macros: { P: 40, G: 80, L: 10 },
+                        desc: 'Juste après le sport. Anti-Cortisol.',
+                        complements: ['Glycine (3-5g) optionnel'],
+                        prefKey: 'collation-training',
+                        options: [
+                            { id: 'A', nom: 'Option A - Clean', aliments: ['🥤 Whey Isolate (40g)', '🍌 1.5 Banane', '🥣 Avoine Poudre (40g)', '🍓 Fruits Rouges (100g)'] },
+                            { id: 'B', nom: 'Option B - Pressé', aliments: ['🥤 Danone HiPro Vanille', '🍌 2 Bananes', '🥜 20g Amandes'] }
+                        ]
+                    },
+                    {
+                        id: 'repas3_train',
+                        nom: '🕢 REPAS 3 - Dîner',
+                        heure: '19:30',
+                        calories: 800,
+                        macros: { P: 50, G: 60, L: 35 },
+                        desc: 'Digestion & Sommeil.',
+                        complements: ['Magnésium (400mg)', 'Zinc (15mg)', 'Oméga-3'],
+                        prefKey: 'diner-training',
+                        options: [
+                            { id: 'A', nom: 'Option A - Saumon', aliments: ['🐟 Saumon (150g)', '🍠 Patate Douce (180g)', '🥗 Légumes à volonté', '❌ Pas d\'huile ajoutée'] },
+                            { id: 'B', nom: 'Option B - Poulet', aliments: ['🍗 Cuisse Poulet (200g)', '🍚 Riz Basmati (180g)', '🥗 Légumes à volonté', '❌ Pas d\'huile ajoutée'] },
+                            { id: 'C', nom: 'Option C - Œufs', aliments: ['🥚 3 Œufs + 1 Blanc', '🌾 Quinoa (180g)', '🥗 Légumes', '🫒 10ml Huile'] }
+                        ],
+                        dessert: 'Skyr 0% (200g) + Miel (15g) + Framboises'
                     }
-
-                    const MENUS_BASE = {
-                        matin: {
-                            nom: '🌅 ROUTINE MATIN (À JEUN)',
-                            heure: '07:30',
-                            details: [
-                                '💧 500ml Eau + Jus 1/2 citron',
-                                '☕ Café Noir (Sans sucre)',
-                                '💊 Créatine : 5g (Indispensable)'
-                            ]
-                        },
-                        training: {
-                            repas: [
-                                {
-                                    id: 'repas1_train',
-                                    nom: '🕛 REPAS 1 - Rupture Jeûne',
-                                    heure: '12:00',
-                                    calories: 900,
-                                    macros: { P: 60, G: 90, L: 30 },
-                                    desc: 'Le plus gros repas. Protéines + Glucides + Légumes.',
-                                    complements: ['Vitamine D3 + K2', 'Multivitamine', 'Oméga-3 (sauf si poisson)', 'Berbérine'],
-                                    assiette: [
-                                        '🍗 Protéine (170g) : Poulet / Poisson Blanc / Steak 5%',
-                                        '🍚 Féculent (270g cuit) : Riz Basmati / Pâtes / Patates',
-                                        '🥦 Légumes (300g) : Brocolis / Haricots / Courgettes',
-                                        '🫒 Lipides : 20ml Huile Olive (Crue)',
-                                        '🍎 Fruit : 1 Pomme ou Poire'
-                                    ]
-                                },
-                                {
-                                    id: 'repas2_train',
-                                    nom: '🕒 REPAS 2 - Post-Training',
-                                    heure: '15:45',
-                                    calories: 600,
-                                    macros: { P: 40, G: 80, L: 10 },
-                                    desc: 'Juste après le sport. Anti-Cortisol.',
-                                    complements: ['Glycine (3-5g) optionnel'],
-                                    prefKey: 'collation-training',
-                                    options: [
-                                        { id: 'A', nom: 'Option A - Clean', aliments: ['🥤 Whey Isolate (40g)', '🍌 1.5 Banane', '🥣 Avoine Poudre (40g)', '🍓 Fruits Rouges (100g)'] },
-                                        { id: 'B', nom: 'Option B - Pressé', aliments: ['🥤 Danone HiPro Vanille', '🍌 2 Bananes', '🥜 20g Amandes'] }
-                                    ]
-                                },
-                                {
-                                    id: 'repas3_train',
-                                    nom: '🕢 REPAS 3 - Dîner',
-                                    heure: '19:30',
-                                    calories: 800,
-                                    macros: { P: 50, G: 60, L: 35 },
-                                    desc: 'Digestion & Sommeil.',
-                                    complements: ['Magnésium (400mg)', 'Zinc (15mg)', 'Oméga-3'],
-                                    prefKey: 'diner-training',
-                                    options: [
-                                        { id: 'A', nom: 'Option A - Saumon', aliments: ['🐟 Saumon (150g)', '🍠 Patate Douce (180g)', '🥗 Légumes à volonté', '❌ Pas d\'huile ajoutée'] },
-                                        { id: 'B', nom: 'Option B - Poulet', aliments: ['🍗 Cuisse Poulet (200g)', '🍚 Riz Basmati (180g)', '🥗 Légumes à volonté', '❌ Pas d\'huile ajoutée'] },
-                                        { id: 'C', nom: 'Option C - Œufs', aliments: ['🥚 3 Œufs + 1 Blanc', '🌾 Quinoa (180g)', '🥗 Légumes', '🫒 10ml Huile'] }
-                                    ],
-                                    dessert: 'Skyr 0% (200g) + Miel (15g) + Framboises'
-                                }
-                            ]
-                        },
-                        repos: {
-                            repas: [
-                                {
-                                    id: 'repas1_repos',
-                                    nom: '🕛 REPAS 1',
-                                    heure: '12:00',
-                                    calories: 700,
-                                    macros: { P: 50, G: 50, L: 30 },
-                                    complements: ['Vitamine D3 + K2', 'Multivitamine', 'Oméga-3'],
-                                    assiette: [
-                                        '🍗 Protéine (170g) : Volaille / Steak / Poisson',
-                                        '🍚 Féculent (200g cuit) : Portion réduite',
-                                        '🥦 Légumes (300g min)',
-                                        '🫒 Lipides : 20ml Huile Olive',
-                                        '🍎 Fruit : 1 Pomme'
-                                    ]
-                                },
-                                {
-                                    id: 'repas2_repos',
-                                    nom: '🕓 COLLATION',
-                                    heure: '16:00',
-                                    calories: 400,
-                                    macros: { P: 30, G: 40, L: 15 },
-                                    prefKey: 'collation-repos',
-                                    options: [
-                                        { id: 'A', nom: 'Option A - Plaisir (2x max)', aliments: ['🍞 2 Pains Complets + 25g Beurre Cacahuète', '🍌 1/2 Banane', '🥤 Petit shake si faim'] },
-                                        { id: 'B', nom: 'Option B - Santé', aliments: ['🍶 Skyr (200g)', '🥜 25g Amandes/Noix', '🥝 1 Fruit (Kiwi/Pomme)'] }
-                                    ]
-                                },
-                                {
-                                    id: 'repas3_repos',
-                                    nom: '🕢 REPAS 3',
-                                    heure: '19:30',
-                                    calories: 600,
-                                    macros: { P: 45, G: 30, L: 30 },
-                                    complements: ['Magnésium', 'Zinc'],
-                                    options: [
-                                        { id: 'A', nom: 'Option A - Standard', aliments: ['🐟 Protéine (150g) : Saumon/Sardines/Œufs', '🍚 Féculent (120g) : Portion légère', '🥗 Légumes à volonté'] },
-                                        { id: 'B', nom: 'Option B - Léger', aliments: ['🥗 Grande Salade Composée', '🐟 Thon/Maquereau', '🥑 1/2 Avocat'] }
-                                    ],
-                                    dessert: 'Skyr nature + Cannelle (Pas de miel)'
-                                }
-                            ]
-                        },
-                        vendredi: {
-                            repas3: {
-                                id: 'repas3_vendredi',
-                                nom: '🗓️ VENDREDI SOIR (80/20 Safe)',
-                                heure: '20:00',
-                                calories: 1200,
-                                macros: { P: 40, G: 100, L: 50 },
-                                desc: 'Repas plaisir contrôlé.',
-                                aliments: [
-                                    '🥗 Entrée : Salade verte + Vinaigre (Obligatoire)',
-                                    '🍟 Plat : Steak/Poulet + 300g Frites Maison (Air Fryer)',
-                                    '🍫 Dessert : Chocolat Noir ou Fruit'
-                                ]
-                            }
-                        }
-                    };
-
-                    const STACK_SUPPLEMENTS_COMPLET = {
-                        basique: {
-                            articulations: { glucosamine: { dose: '1500mg', prix: '15€/mois' }, msm: { dose: '2000mg', prix: '10€/mois' }, boswellia: { dose: '1000mg', prix: '15€/mois' } },
-                            performance: { creatine: { dose: '5g/j', prix: '8€/mois' }, whey: { dose: '60-90g/j', prix: '40€/mois' }, omega3: { dose: '2-4g/j', prix: '20€/mois' } },
-                            sante: { vitamine_d3: { dose: '5000 UI', prix: '8€/mois' }, magnesium: { dose: '400mg', prix: '10€/mois' }, zinc: { dose: '30mg', prix: '8€/mois' } }
-                        },
-                        diabete: {
-                            berberine: { dose: '500mg 3×/jour', prix: '15€/mois', note: 'PRIORITÉ #1' },
-                            chrome: { dose: '200mcg 2×/jour', prix: '5€/mois' }
-                        }
-                    };
-
-                    const AJUSTEMENTS_MACROS = {
-                        optionA: { nom: 'Option A - Équilibré', desc: 'Ajustements légers', details: 'Poulet +20g, Riz -8g glucides' },
-                        optionB: { nom: 'Option B - Strict', desc: 'Si plateau > 2 semaines', details: 'Suppression banane, Riz -17g' }
-                    };
-
-                    // --- STATE ---
-                    function getSaison() { const mois = new Date().getMonth() + 1; for (const [key, saison] of Object.entries(SAISONS)) { if (saison.mois.includes(mois)) return saison } return SAISONS.automne }
-                    let SAISON_ACTUELLE = getSaison();
-                    let semaineActuelle = 'S1';
-                    let jourType = 'training';
-                    let grignotages = JSON.parse(localStorage.getItem('grignotages') || '[]');
-                    let pesees = JSON.parse(localStorage.getItem('pesees-hebdo') || '[]');
-                    let optionsSelectionnees = JSON.parse(localStorage.getItem('options-repas') || '{}');
-                    let planningHebdo = JSON.parse(localStorage.getItem('planningHebdo') || '[1, 2, 4, 5]');
-                    let preferencesMenu = JSON.parse(localStorage.getItem('preferences-menu') || '{}');
-
-                    // --- INIT ---
-                    window.onload = function () {
-                        updateDateDisplay();
-                        updateSeasonDisplay();
-                        // Init date input
-                        const dateInput = document.getElementById('date-debut-input');
-                        if (dateInput) dateInput.value = PLAN_HYBRIDE.dateDebut;
-
-                        // Init preferences selectors
-                        for (const [key, val] of Object.entries(preferencesMenu)) {
-                            const el = document.getElementById('pref-' + key);
-                            if (el) el.value = val;
-                        }
-
-                        semaineActuelle = getSemaineActuelle();
-                        afficherSemainier();
-                        checkDayAuto();
-                        afficherMenu();
-                        calculerProgression();
-                        createTimelineItems();
-                        afficherStackSupplements();
-                        renderConfigJours();
-                        calculerProgressionProgramme();
-                        calculerSuiviPoids();
-                    };
-
-                    // --- LOGIC ---
-                    const JOURS_SEMAINE = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-                    const MOIS_ANNEE = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-
-                    function updateDateDisplay() {
-                        const today = new Date();
-                        const jour = JOURS_SEMAINE[today.getDay()];
-                        const num = today.getDate();
-                        const mois = MOIS_ANNEE[today.getMonth()];
-                        document.getElementById('header-date').textContent = `${jour} ${num} ${mois}`;
+                ]
+            },
+            repos: {
+                repas: [
+                    {
+                        id: 'repas1_repos',
+                        nom: '🕛 REPAS 1',
+                        heure: '12:00',
+                        calories: 700,
+                        macros: { P: 50, G: 50, L: 30 },
+                        complements: ['Vitamine D3 + K2', 'Multivitamine', 'Oméga-3'],
+                        assiette: [
+                            '🍗 Protéine (170g) : Volaille / Steak / Poisson',
+                            '🍚 Féculent (200g cuit) : Portion réduite',
+                            '🥦 Légumes (300g min)',
+                            '🫒 Lipides : 20ml Huile Olive',
+                            '🍎 Fruit : 1 Pomme'
+                        ]
+                    },
+                    {
+                        id: 'repas2_repos',
+                        nom: '🕓 COLLATION',
+                        heure: '16:00',
+                        calories: 400,
+                        macros: { P: 30, G: 40, L: 15 },
+                        prefKey: 'collation-repos',
+                        options: [
+                            { id: 'A', nom: 'Option A - Plaisir (2x max)', aliments: ['🍞 2 Pains Complets + 25g Beurre Cacahuète', '🍌 1/2 Banane', '🥤 Petit shake si faim'] },
+                            { id: 'B', nom: 'Option B - Santé', aliments: ['🍶 Skyr (200g)', '🥜 25g Amandes/Noix', '🥝 1 Fruit (Kiwi/Pomme)'] }
+                        ]
+                    },
+                    {
+                        id: 'repas3_repos',
+                        nom: '🕢 REPAS 3',
+                        heure: '19:30',
+                        calories: 600,
+                        macros: { P: 45, G: 30, L: 30 },
+                        complements: ['Magnésium', 'Zinc'],
+                        options: [
+                            { id: 'A', nom: 'Option A - Standard', aliments: ['🐟 Protéine (150g) : Saumon/Sardines/Œufs', '🍚 Féculent (120g) : Portion légère', '🥗 Légumes à volonté'] },
+                            { id: 'B', nom: 'Option B - Léger', aliments: ['🥗 Grande Salade Composée', '🐟 Thon/Maquereau', '🥑 1/2 Avocat'] }
+                        ],
+                        dessert: 'Skyr nature + Cannelle (Pas de miel)'
                     }
+                ]
+            },
+            vendredi: {
+                repas3: {
+                    id: 'repas3_vendredi',
+                    nom: '🗓️ VENDREDI SOIR (80/20 Safe)',
+                    heure: '20:00',
+                    calories: 1200,
+                    macros: { P: 40, G: 100, L: 50 },
+                    desc: 'Repas plaisir contrôlé.',
+                    aliments: [
+                        '🥗 Entrée : Salade verte + Vinaigre (Obligatoire)',
+                        '🍟 Plat : Steak/Poulet + 300g Frites Maison (Air Fryer)',
+                        '🍫 Dessert : Chocolat Noir ou Fruit'
+                    ]
+                }
+            }
+        };
 
-                    function updateDateDebut() {
-                        const input = document.getElementById('date-debut-input');
-                        if (input && input.value) {
-                            PLAN_HYBRIDE.dateDebut = input.value;
-                            localStorage.setItem('dateDebutProgramme', input.value);
-                            semaineActuelle = getSemaineActuelle();
-                            afficherMenu();
-                            calculerProgression();
-                            calculerProgressionProgramme();
-                            createTimelineItems(); // Update active dot
-                            alert("Date de début mise à jour ! Semaine actuelle : " + semaineActuelle);
-                        }
-                    }
+        const STACK_SUPPLEMENTS_COMPLET = {
+            basique: {
+                articulations: { glucosamine: { dose: '1500mg', prix: '15€/mois' }, msm: { dose: '2000mg', prix: '10€/mois' }, boswellia: { dose: '1000mg', prix: '15€/mois' } },
+                performance: { creatine: { dose: '5g/j', prix: '8€/mois' }, whey: { dose: '60-90g/j', prix: '40€/mois' }, omega3: { dose: '2-4g/j', prix: '20€/mois' } },
+                sante: { vitamine_d3: { dose: '5000 UI', prix: '8€/mois' }, magnesium: { dose: '400mg', prix: '10€/mois' }, zinc: { dose: '30mg', prix: '8€/mois' } }
+            },
+            diabete: {
+                berberine: { dose: '500mg 3×/jour', prix: '15€/mois', note: 'PRIORITÉ #1' },
+                chrome: { dose: '200mcg 2×/jour', prix: '5€/mois' }
+            }
+        };
 
-                    function renderConfigJours() {
-                        const container = document.getElementById('config-jours-container');
-                        if (!container) return;
-                        let html = '';
-                        const ordre = [1, 2, 3, 4, 5, 6, 0];
+        const AJUSTEMENTS_MACROS = {
+            optionA: { nom: 'Option A - Équilibré', desc: 'Ajustements légers', details: 'Poulet +20g, Riz -8g glucides' },
+            optionB: { nom: 'Option B - Strict', desc: 'Si plateau > 2 semaines', details: 'Suppression banane, Riz -17g' }
+        };
 
-                        ordre.forEach(idx => {
-                            const isChecked = planningHebdo.includes(idx);
-                            html += `<label style="display:flex; align-items:center; gap:8px; background:#f1f2f6; padding:8px 12px; border-radius:10px; cursor:pointer;">
+        // --- STATE ---
+        function getSaison() { const mois = new Date().getMonth() + 1; for (const [key, saison] of Object.entries(SAISONS)) { if (saison.mois.includes(mois)) return saison } return SAISONS.automne }
+        let SAISON_ACTUELLE = getSaison();
+        let semaineActuelle = 'S1';
+        let jourType = 'training';
+        let grignotages = JSON.parse(localStorage.getItem('grignotages') || '[]');
+        let pesees = JSON.parse(localStorage.getItem('pesees-hebdo') || '[]');
+        let optionsSelectionnees = JSON.parse(localStorage.getItem('options-repas') || '{}');
+        let planningHebdo = JSON.parse(localStorage.getItem('planningHebdo') || '[1, 2, 4, 5]');
+        let preferencesMenu = JSON.parse(localStorage.getItem('preferences-menu') || '{}');
+
+        // --- INIT ---
+        window.onload = function () {
+            updateDateDisplay();
+            updateSeasonDisplay();
+            // Init date input
+            const dateInput = document.getElementById('date-debut-input');
+            if (dateInput) dateInput.value = PLAN_HYBRIDE.dateDebut;
+
+            // Init preferences selectors
+            for (const [key, val] of Object.entries(preferencesMenu)) {
+                const el = document.getElementById('pref-' + key);
+                if (el) el.value = val;
+            }
+
+            semaineActuelle = getSemaineActuelle();
+            afficherSemainier();
+            checkDayAuto();
+            afficherMenu();
+            calculerProgression();
+            createTimelineItems();
+            afficherStackSupplements();
+            renderConfigJours();
+            calculerProgressionProgramme();
+            calculerSuiviPoids();
+        };
+
+        // --- LOGIC ---
+        const JOURS_SEMAINE = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+        const MOIS_ANNEE = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+
+        function updateDateDisplay() {
+            const today = new Date();
+            const jour = JOURS_SEMAINE[today.getDay()];
+            const num = today.getDate();
+            const mois = MOIS_ANNEE[today.getMonth()];
+            document.getElementById('header-date').textContent = `${jour} ${num} ${mois}`;
+        }
+
+        function updateDateDebut() {
+            const input = document.getElementById('date-debut-input');
+            if (input && input.value) {
+                PLAN_HYBRIDE.dateDebut = input.value;
+                localStorage.setItem('dateDebutProgramme', input.value);
+                semaineActuelle = getSemaineActuelle();
+                afficherMenu();
+                calculerProgression();
+                calculerProgressionProgramme();
+                createTimelineItems(); // Update active dot
+                alert("Date de début mise à jour ! Semaine actuelle : " + semaineActuelle);
+            }
+        }
+
+        function renderConfigJours() {
+            const container = document.getElementById('config-jours-container');
+            if (!container) return;
+            let html = '';
+            const ordre = [1, 2, 3, 4, 5, 6, 0];
+
+            ordre.forEach(idx => {
+                const isChecked = planningHebdo.includes(idx);
+                html += `<label style="display:flex; align-items:center; gap:8px; background:#f1f2f6; padding:8px 12px; border-radius:10px; cursor:pointer;">
                     <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleConfigJour(${idx})">
                     <span style="font-size:14px; font-weight:600; color:var(--text-main);">${JOURS_SEMAINE[idx]}</span>
                 </label>`;
-                        });
-                        container.innerHTML = html;
-                    }
+            });
+            container.innerHTML = html;
+        }
 
-                    function toggleConfigJour(dayIndex) {
-                        const idx = planningHebdo.indexOf(dayIndex);
-                        if (idx > -1) planningHebdo.splice(idx, 1);
-                        else planningHebdo.push(dayIndex);
+        function toggleConfigJour(dayIndex) {
+            const idx = planningHebdo.indexOf(dayIndex);
+            if (idx > -1) planningHebdo.splice(idx, 1);
+            else planningHebdo.push(dayIndex);
 
-                        localStorage.setItem('planningHebdo', JSON.stringify(planningHebdo));
-                        afficherSemainier();
-                        renderConfigJours();
+            localStorage.setItem('planningHebdo', JSON.stringify(planningHebdo));
+            afficherSemainier();
+            renderConfigJours();
 
-                        if (dayIndex === new Date().getDay()) {
-                            checkDayAuto();
-                        }
-                    }
+            if (dayIndex === new Date().getDay()) {
+                checkDayAuto();
+            }
+        }
 
-                    function switchTab(tabName) {
-                        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-                        document.getElementById('tab-' + tabName).classList.add('active');
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
 
-                        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                        const icons = { 'dashboard': 0, 'training': 1, 'profile': 2 };
-                        document.querySelectorAll('.nav-item')[icons[tabName]].classList.add('active');
-                    }
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            const icons = { 'dashboard': 0, 'training': 1, 'profile': 2 };
+            document.querySelectorAll('.nav-item')[icons[tabName]].classList.add('active');
+        }
 
-                    function afficherSemainier() {
-                        const todayIndex = new Date().getDay();
-                        let html = '';
-                        const ordreJours = [1, 2, 3, 4, 5, 6, 0];
+        function afficherSemainier() {
+            const todayIndex = new Date().getDay();
+            let html = '';
+            const ordreJours = [1, 2, 3, 4, 5, 6, 0];
 
-                        ordreJours.forEach(idx => {
-                            const isTraining = planningHebdo.includes(idx);
-                            const isToday = idx === todayIndex;
-                            html += `<div class="jour-badge ${isTraining ? 'training' : 'repos'} ${isToday ? 'today' : ''}"
+            ordreJours.forEach(idx => {
+                const isTraining = planningHebdo.includes(idx);
+                const isToday = idx === todayIndex;
+                html += `<div class="jour-badge ${isTraining ? 'training' : 'repos'} ${isToday ? 'today' : ''}"
                     onclick="toggleJourPlanning(${idx})">
                     <span>${JOURS_SEMAINE[idx]}</span>
                     <div class="jour-dot"></div>
                 </div>`;
-                        });
-                        document.getElementById('semainier-container').innerHTML = html;
-                    }
+            });
+            document.getElementById('semainier-container').innerHTML = html;
+        }
 
-                    function toggleJourPlanning(dayIndex) {
-                        const idx = planningHebdo.indexOf(dayIndex);
-                        if (idx > -1) planningHebdo.splice(idx, 1);
-                        else planningHebdo.push(dayIndex);
+        function toggleJourPlanning(dayIndex) {
+            const idx = planningHebdo.indexOf(dayIndex);
+            if (idx > -1) planningHebdo.splice(idx, 1);
+            else planningHebdo.push(dayIndex);
 
-                        localStorage.setItem('planningHebdo', JSON.stringify(planningHebdo));
-                        afficherSemainier();
+            localStorage.setItem('planningHebdo', JSON.stringify(planningHebdo));
+            afficherSemainier();
 
-                        if (dayIndex === new Date().getDay()) {
-                            checkDayAuto();
-                        }
-                    }
+            if (dayIndex === new Date().getDay()) {
+                checkDayAuto();
+            }
+        }
 
-                    function checkDayAuto() {
-                        const todayIndex = new Date().getDay();
-                        const isTrainingToday = planningHebdo.includes(todayIndex);
-                        const newType = isTrainingToday ? 'training' : 'repos';
+        function checkDayAuto() {
+            const todayIndex = new Date().getDay();
+            const isTrainingToday = planningHebdo.includes(todayIndex);
+            const newType = isTrainingToday ? 'training' : 'repos';
 
-                        if (jourType !== newType) {
-                            setDayType(newType);
-                        } else {
-                            loadDayType();
-                        }
-                    }
+            if (jourType !== newType) {
+                setDayType(newType);
+            } else {
+                loadDayType();
+            }
+        }
 
-                    function getSemaineActuelle() {
-                        const dateDebut = new Date(PLAN_HYBRIDE.dateDebut);
-                        const aujourdhui = new Date();
-                        const diffJours = Math.floor((aujourdhui - dateDebut) / (1000 * 60 * 60 * 24));
-                        const numSemaine = Math.floor(diffJours / 7) + 1;
-                        return 'S' + (numSemaine > 10 ? 10 : numSemaine < 1 ? 1 : numSemaine);
-                    }
+        function getSemaineActuelle() {
+            const dateDebut = new Date(PLAN_HYBRIDE.dateDebut);
+            const aujourdhui = new Date();
+            const diffJours = Math.floor((aujourdhui - dateDebut) / (1000 * 60 * 60 * 24));
+            const numSemaine = Math.floor(diffJours / 7) + 1;
+            return 'S' + (numSemaine > 10 ? 10 : numSemaine < 1 ? 1 : numSemaine);
+        }
 
-                    function updateSeasonDisplay() {
-                        SAISON_ACTUELLE = getSaison();
-                        document.getElementById('season-badge').textContent = SAISON_ACTUELLE.emoji + ' ' + SAISON_ACTUELLE.nom.toUpperCase();
-                    }
+        function updateSeasonDisplay() {
+            SAISON_ACTUELLE = getSaison();
+            document.getElementById('season-badge').textContent = SAISON_ACTUELLE.emoji + ' ' + SAISON_ACTUELLE.nom.toUpperCase();
+        }
 
-                    function setDayType(type) {
-                        jourType = type;
-                        localStorage.setItem('jourType', type);
-                        document.getElementById('day-display').textContent = type === 'training' ? '🏋️ JOUR TRAINING' : '💤 JOUR REPOS';
-                        afficherMenu();
-                        calculerProgression();
-                    }
+        function setDayType(type) {
+            jourType = type;
+            localStorage.setItem('jourType', type);
+            document.getElementById('day-display').textContent = type === 'training' ? '🏋️ JOUR TRAINING' : '💤 JOUR REPOS';
+            afficherMenu();
+            calculerProgression();
+        }
 
-                    function loadDayType() {
-                        const saved = localStorage.getItem('jourType');
-                        if (saved) jourType = saved;
-                        document.getElementById('day-display').textContent = jourType === 'training' ? '🏋️ JOUR TRAINING' : '💤 JOUR REPOS';
-                    }
+        function loadDayType() {
+            const saved = localStorage.getItem('jourType');
+            if (saved) jourType = saved;
+            document.getElementById('day-display').textContent = jourType === 'training' ? '🏋️ JOUR TRAINING' : '💤 JOUR REPOS';
+        }
 
-                    function savePreference(key, value) {
-                        preferencesMenu[key] = value;
-                        localStorage.setItem('preferences-menu', JSON.stringify(preferencesMenu));
-                        afficherMenu(); // Refresh menu to apply new default
-                        calculerProgression();
-                    }
+        function savePreference(key, value) {
+            preferencesMenu[key] = value;
+            localStorage.setItem('preferences-menu', JSON.stringify(preferencesMenu));
+            afficherMenu(); // Refresh menu to apply new default
+            calculerProgression();
+        }
 
-                    function afficherMenu() {
-                        const menu = MENUS_BASE[jourType];
-                        const config = PLAN_HYBRIDE.semaines[semaineActuelle] || PLAN_HYBRIDE.semaines['S1'];
-                        document.getElementById('semaine-actuelle-label').textContent = `${semaineActuelle} - ${config.nom.toUpperCase()}`;
+        function afficherMenu() {
+            const menu = MENUS_BASE[jourType];
+            const config = PLAN_HYBRIDE.semaines[semaineActuelle] || PLAN_HYBRIDE.semaines['S1'];
+            document.getElementById('semaine-actuelle-label').textContent = `${semaineActuelle} - ${config.nom.toUpperCase()}`;
 
-                        let html = '';
+            let html = '';
 
-                        // 1. ROUTINE MATIN
-                        const matin = MENUS_BASE.matin;
-                        html += `<div class="nutrition-section" style="background:#fff5f0; padding:15px; border-radius:20px; border:1px solid #ffeaa7; margin-bottom:20px;">
+            // 1. ROUTINE MATIN
+            const matin = MENUS_BASE.matin;
+            html += `<div class="nutrition-section" style="background:#fff5f0; padding:15px; border-radius:20px; border:1px solid #ffeaa7; margin-bottom:20px;">
                 <h3 style="color:#d35400; margin-bottom:10px;">${matin.nom}</h3>
                 <ul style="list-style:none;">
                     ${matin.details.map(d => `<li style="margin-bottom:5px; font-size:13px;">${d}</li>`).join('')}
                 </ul>
             </div>`;
 
-                        // 2. REPAS
-                        menu.repas.forEach(repas => {
-                            // LOGIQUE VENDREDI SOIR
-                            const dayIndex = new Date().getDay();
-                            let currentRepas = repas;
-                            let isVendrediSoir = (dayIndex === 5 && repas.id.includes('repas3')); // 5 = Vendredi
+            // 2. REPAS
+            menu.repas.forEach(repas => {
+                // LOGIQUE VENDREDI SOIR
+                const dayIndex = new Date().getDay();
+                let currentRepas = repas;
+                let isVendrediSoir = (dayIndex === 5 && repas.id.includes('repas3')); // 5 = Vendredi
 
-                            if (isVendrediSoir) {
-                                currentRepas = MENUS_BASE.vendredi.repas3;
-                            }
+                if (isVendrediSoir) {
+                    currentRepas = MENUS_BASE.vendredi.repas3;
+                }
 
-                            const valide = isRepasValide(currentRepas.id);
+                const valide = isRepasValide(currentRepas.id);
 
-                            html += `<div class="nutrition-section">
+                html += `<div class="nutrition-section">
                     <div style="display:flex; justify-content:space-between; align-items:baseline;">
                         <h3>${currentRepas.heure} - ${currentRepas.nom}</h3>
                         ${isVendrediSoir ? '<span style="font-size:10px; background:#ffeaa7; padding:2px 6px; border-radius:10px;">🎉 80/20</span>' : ''}
@@ -877,246 +946,245 @@
                         ${currentRepas.desc ? `<p style="font-size:12px; color:var(--text-light); margin-bottom:10px; font-style:italic;">${currentRepas.desc}</p>` : ''}
                         `;
 
-                            // COMPLEMENTS
-                            if (currentRepas.complements) {
-                                html += `<div style="margin-bottom:10px; font-size:12px; background:#eef2f3; padding:8px; border-radius:10px;">
+                // COMPLEMENTS
+                if (currentRepas.complements) {
+                    html += `<div style="margin-bottom:10px; font-size:12px; background:#eef2f3; padding:8px; border-radius:10px;">
                         <strong>💊 Compléments:</strong> ${currentRepas.complements.join(', ')}
                     </div>`;
-                            }
+                }
 
-                            // CONTENU (ASSIETTE ou OPTIONS)
-                            if (currentRepas.options) {
-                                const today = new Date().toISOString().split('T')[0];
-                                const optionKey = `${today}-${currentRepas.id}`;
+                // CONTENU (ASSIETTE ou OPTIONS)
+                if (currentRepas.options) {
+                    const today = new Date().toISOString().split('T')[0];
+                    const optionKey = `${today}-${currentRepas.id}`;
 
-                                // Smart Default : Preference or First Option
-                                let defaultOption = currentRepas.options[0].id;
-                                if (currentRepas.prefKey && preferencesMenu[currentRepas.prefKey]) {
-                                    defaultOption = preferencesMenu[currentRepas.prefKey];
-                                }
+                    // Smart Default : Preference or First Option
+                    let defaultOption = currentRepas.options[0].id;
+                    if (currentRepas.prefKey && preferencesMenu[currentRepas.prefKey]) {
+                        defaultOption = preferencesMenu[currentRepas.prefKey];
+                    }
 
-                                const optionSelectionnee = optionsSelectionnees[optionKey] || defaultOption;
+                    const optionSelectionnee = optionsSelectionnees[optionKey] || defaultOption;
 
-                                // Save default if not set
-                                if (!optionsSelectionnees[optionKey]) {
-                                    optionsSelectionnees[optionKey] = defaultOption;
-                                }
+                    // Save default if not set
+                    if (!optionsSelectionnees[optionKey]) {
+                        optionsSelectionnees[optionKey] = defaultOption;
+                    }
 
-                                html += `<div class="option-selector"><strong>🔄 Choix option :</strong><br>`;
-                                currentRepas.options.forEach(opt => {
-                                    const isActive = opt.id === optionSelectionnee;
-                                    html += `<button class="option-btn ${isActive ? 'active' : ''}" onclick="selectOption('${currentRepas.id}', '${opt.id}')">${opt.nom}</button>`;
-                                });
-                                html += `</div>`;
+                    html += `<div class="option-selector"><strong>🔄 Choix option :</strong><br>`;
+                    currentRepas.options.forEach(opt => {
+                        const isActive = opt.id === optionSelectionnee;
+                        html += `<button class="option-btn ${isActive ? 'active' : ''}" onclick="selectOption('${currentRepas.id}', '${opt.id}')">${opt.nom}</button>`;
+                    });
+                    html += `</div>`;
 
-                                const optionChoisie = currentRepas.options.find(o => o.id === optionSelectionnee);
-                                if (optionChoisie) {
-                                    html += `<div class="meal-foods">
+                    const optionChoisie = currentRepas.options.find(o => o.id === optionSelectionnee);
+                    if (optionChoisie) {
+                        html += `<div class="meal-foods">
                             <ul style="padding-left:20px;">${optionChoisie.aliments.map(a => `<li>${a}</li>`).join('')}</ul>
                         </div>`;
-                                }
-                            } else if (currentRepas.assiette) {
-                                html += `<div class="meal-foods"><strong>🍽️ L'Assiette (1 choix/ligne) :</strong>
+                    }
+                } else if (currentRepas.assiette) {
+                    html += `<div class="meal-foods"><strong>🍽️ L'Assiette (1 choix/ligne) :</strong>
                         <ul style="padding-left:20px;">${currentRepas.assiette.map(a => `<li>${a}</li>`).join('')}</ul>
                     </div>`;
-                            } else if (currentRepas.aliments) {
-                                html += `<div class="meal-foods">
+                } else if (currentRepas.aliments) {
+                    html += `<div class="meal-foods">
                         <ul style="padding-left:20px;">${currentRepas.aliments.map(a => `<li>${a}</li>`).join('')}</ul>
                     </div>`;
-                            }
+                }
 
-                            if (currentRepas.dessert) {
-                                html += `<div style="margin-top:10px; font-size:13px; color:var(--primary);"><strong>🍨 Dessert :</strong> ${currentRepas.dessert}</div>`;
-                            }
+                if (currentRepas.dessert) {
+                    html += `<div style="margin-top:10px; font-size:13px; color:var(--primary);"><strong>🍨 Dessert :</strong> ${currentRepas.dessert}</div>`;
+                }
 
-                            html += `<div class="validation-checkbox ${valide ? 'validated' : ''}" onclick="toggleRepas('${currentRepas.id}')">
+                html += `<div class="validation-checkbox ${valide ? 'validated' : ''}" onclick="toggleRepas('${currentRepas.id}')">
                         <input type="checkbox" ${valide ? 'checked' : ''} onclick="event.stopPropagation()">
                         <span><strong>${valide ? '✅ Validé' : '⏸️ À valider'}</strong></span>
                     </div>
                 </div>
             </div>`;
-                        });
-                        document.getElementById('menu-container').innerHTML = html;
-                    }
+            });
+            document.getElementById('menu-container').innerHTML = html;
+        }
 
-                    function selectOption(repasId, optionId) {
-                        const today = new Date().toISOString().split('T')[0];
-                        optionsSelectionnees[`${today}-${repasId}`] = optionId;
-                        localStorage.setItem('options-repas', JSON.stringify(optionsSelectionnees));
-                        afficherMenu();
-                        calculerProgression();
-                    }
+        function selectOption(repasId, optionId) {
+            const today = new Date().toISOString().split('T')[0];
+            optionsSelectionnees[`${today}-${repasId}`] = optionId;
+            localStorage.setItem('options-repas', JSON.stringify(optionsSelectionnees));
+            afficherMenu();
+            calculerProgression();
+        }
 
-                    function toggleRepas(repasId) {
-                        const today = new Date().toISOString().split('T')[0];
-                        const key = `repas-${today}`;
-                        let validations = JSON.parse(localStorage.getItem(key) || '[]');
-                        const index = validations.indexOf(repasId);
-                        if (index > -1) validations.splice(index, 1);
-                        else validations.push(repasId);
-                        localStorage.setItem(key, JSON.stringify(validations));
-                        afficherMenu();
-                        calculerProgression();
-                    }
+        function toggleRepas(repasId) {
+            const today = new Date().toISOString().split('T')[0];
+            const key = `repas-${today}`;
+            let validations = JSON.parse(localStorage.getItem(key) || '[]');
+            const index = validations.indexOf(repasId);
+            if (index > -1) validations.splice(index, 1);
+            else validations.push(repasId);
+            localStorage.setItem(key, JSON.stringify(validations));
+            afficherMenu();
+            calculerProgression();
+        }
 
-                    function isRepasValide(repasId) {
-                        const today = new Date().toISOString().split('T')[0];
-                        return (JSON.parse(localStorage.getItem(`repas-${today}`) || '[]')).includes(repasId);
-                    }
+        function isRepasValide(repasId) {
+            const today = new Date().toISOString().split('T')[0];
+            return (JSON.parse(localStorage.getItem(`repas-${today}`) || '[]')).includes(repasId);
+        }
 
-                    function calculerProgression() {
-                        const menu = MENUS_BASE[jourType];
-                        const config = PLAN_HYBRIDE.semaines[semaineActuelle] || PLAN_HYBRIDE.semaines['S1'];
-                        const today = new Date().toISOString().split('T')[0];
-                        const validations = JSON.parse(localStorage.getItem(`repas-${today}`) || '[]');
+        function calculerProgression() {
+            const menu = MENUS_BASE[jourType];
+            const config = PLAN_HYBRIDE.semaines[semaineActuelle] || PLAN_HYBRIDE.semaines['S1'];
+            const today = new Date().toISOString().split('T')[0];
+            const validations = JSON.parse(localStorage.getItem(`repas-${today}`) || '[]');
 
-                        let total = { cal: 0, p: 0, g: 0, l: 0 };
+            let total = { cal: 0, p: 0, g: 0, l: 0 };
 
-                        validations.forEach(id => {
-                            // Check normal meals
-                            let repas = menu.repas.find(r => r.id === id);
+            validations.forEach(id => {
+                // Check normal meals
+                let repas = menu.repas.find(r => r.id === id);
 
-                            // Check Vendredi special
-                            if (!repas && id === 'repas3_vendredi') {
-                                repas = MENUS_BASE.vendredi.repas3;
-                            }
+                // Check Vendredi special
+                if (!repas && id === 'repas3_vendredi') {
+                    repas = MENUS_BASE.vendredi.repas3;
+                }
 
-                            if (repas) {
-                                total.cal += repas.calories;
-                                total.p += repas.macros.P;
-                                total.g += repas.macros.G;
-                                total.l += repas.macros.L;
-                            }
-                        });
+                if (repas) {
+                    total.cal += repas.calories;
+                    total.p += repas.macros.P;
+                    total.g += repas.macros.G;
+                    total.l += repas.macros.L;
+                }
+            });
 
-                        const grigJour = grignotages.filter(g => g.date === today);
-                        total.cal += grigJour.reduce((sum, g) => sum + g.calories, 0);
+            const grigJour = grignotages.filter(g => g.date === today);
+            total.cal += grigJour.reduce((sum, g) => sum + g.calories, 0);
 
-                        // Gestion objectif personnalisé
-                        const customGoal = localStorage.getItem('objectif-calories-' + jourType);
-                        const objectifCal = customGoal ? parseInt(customGoal) : config.calories[jourType];
+            // Gestion objectif personnalisé
+            const customGoal = localStorage.getItem('objectif-calories-' + jourType);
+            const objectifCal = customGoal ? parseInt(customGoal) : config.calories[jourType];
 
-                        document.getElementById('cal-actuel').textContent = total.cal;
-                        document.getElementById('cal-total').textContent = objectifCal;
-                        document.getElementById('prot-actuel').textContent = total.p;
-                        document.getElementById('prot-total').textContent = config.macros[jourType].P;
-                        document.getElementById('gluc-actuel').textContent = total.g;
-                        document.getElementById('gluc-total').textContent = config.macros[jourType].G;
-                        document.getElementById('lip-actuel').textContent = total.l;
-                        document.getElementById('lip-total').textContent = config.macros[jourType].L;
+            document.getElementById('cal-actuel').textContent = total.cal;
+            document.getElementById('cal-total').textContent = objectifCal;
+            document.getElementById('prot-actuel').textContent = total.p;
+            document.getElementById('prot-total').textContent = config.macros[jourType].P;
+            document.getElementById('gluc-actuel').textContent = total.g;
+            document.getElementById('gluc-total').textContent = config.macros[jourType].G;
+            document.getElementById('lip-actuel').textContent = total.l;
+            document.getElementById('lip-total').textContent = config.macros[jourType].L;
 
-                        const pct = Math.min(100, Math.round((total.cal / objectifCal) * 100));
-                        document.getElementById('progress-bar').style.width = pct + '%';
-                        document.getElementById('progress-bar').textContent = pct + '%';
-                    }
+            const pct = Math.min(100, Math.round((total.cal / objectifCal) * 100));
+            document.getElementById('progress-bar').style.width = pct + '%';
+            document.getElementById('progress-bar').textContent = pct + '%';
+        }
 
-                    function editObjectifCalories() {
-                        const currentGoal = document.getElementById('cal-total').textContent;
-                        const newGoal = prompt("Entrez votre nouvel objectif calorique pour les jours " + jourType.toUpperCase() + " :", currentGoal);
+        function editObjectifCalories() {
+            const currentGoal = document.getElementById('cal-total').textContent;
+            const newGoal = prompt("Entrez votre nouvel objectif calorique pour les jours " + jourType.toUpperCase() + " :", currentGoal);
 
-                        if (newGoal && !isNaN(newGoal)) {
-                            localStorage.setItem('objectif-calories-' + jourType, newGoal);
-                            calculerProgression();
-                        }
-                    }
+            if (newGoal && !isNaN(newGoal)) {
+                localStorage.setItem('objectif-calories-' + jourType, newGoal);
+                calculerProgression();
+            }
+        }
 
-                    function calculerProgressionProgramme() {
-                        const num = parseInt(semaineActuelle.replace('S', ''));
-                        const pct = Math.min(100, Math.round((num / 10) * 100));
+        function calculerProgressionProgramme() {
+            const num = parseInt(semaineActuelle.replace('S', ''));
+            const pct = Math.min(100, Math.round((num / 10) * 100));
 
-                        const bar = document.getElementById('global-progress-bar');
-                        const label = document.getElementById('global-week-display');
+            const bar = document.getElementById('global-progress-bar');
+            const label = document.getElementById('global-week-display');
 
-                        if (bar) bar.style.width = pct + '%';
-                        if (label) label.textContent = `${semaineActuelle}/10`;
-                    }
+            if (bar) bar.style.width = pct + '%';
+            if (label) label.textContent = `${semaineActuelle}/10`;
+        }
 
-                    function calculerSuiviPoids() {
-                        const dernierPoids = pesees.length > 0 ? pesees[pesees.length - 1].poids : 85;
-                        const poidsDepart = 85;
-                        const objectifHebdo = 0.5;
-                        const numSemaine = parseInt(semaineActuelle.replace('S', ''));
+        function calculerSuiviPoids() {
+            const dernierPoids = pesees.length > 0 ? pesees[pesees.length - 1].poids : 85;
+            const poidsDepart = 85;
+            const objectifHebdo = 0.5;
+            const numSemaine = parseInt(semaineActuelle.replace('S', ''));
 
-                        const objectifTheorique = poidsDepart - (objectifHebdo * (numSemaine - 1));
-                        const ecart = (dernierPoids - objectifTheorique).toFixed(1);
+            const objectifTheorique = poidsDepart - (objectifHebdo * (numSemaine - 1));
+            const ecart = (dernierPoids - objectifTheorique).toFixed(1);
 
-                        document.getElementById('poids-actuel').textContent = dernierPoids + ' kg';
-                        document.getElementById('poids-semaine').textContent = numSemaine;
+            document.getElementById('poids-actuel').textContent = dernierPoids + ' kg';
+            document.getElementById('poids-semaine').textContent = numSemaine;
 
-                        const ecartEl = document.getElementById('poids-ecart');
-                        if (ecartEl) {
-                            ecartEl.textContent = (ecart > 0 ? '+' : '') + ecart + ' kg';
-                            ecartEl.style.color = ecart <= 0 ? '#00b894' : '#ff7675';
-                        }
-                    }
+            const ecartEl = document.getElementById('poids-ecart');
+            if (ecartEl) {
+                ecartEl.textContent = (ecart > 0 ? '+' : '') + ecart + ' kg';
+                ecartEl.style.color = ecart <= 0 ? '#00b894' : '#ff7675';
+            }
+        }
 
-                    function updatePoids() {
-                        const input = document.getElementById('poids-input');
-                        const nouveauPoids = parseFloat(input.value);
+        function updatePoids() {
+            const input = document.getElementById('poids-input');
+            const nouveauPoids = parseFloat(input.value);
 
-                        if (!nouveauPoids || isNaN(nouveauPoids)) {
-                            alert("Veuillez entrer un poids valide.");
-                            return;
-                        }
+            if (!nouveauPoids || isNaN(nouveauPoids)) {
+                alert("Veuillez entrer un poids valide.");
+                return;
+            }
 
-                        const today = new Date().toISOString().split('T')[0];
+            const today = new Date().toISOString().split('T')[0];
 
-                        // Vérifier si une pesée existe déjà pour aujourd'hui
-                        const existingIndex = pesees.findIndex(p => p.date === today);
-                        if (existingIndex > -1) {
-                            pesees[existingIndex].poids = nouveauPoids;
-                        } else {
-                            pesees.push({ date: today, poids: nouveauPoids });
-                        }
+            // Vérifier si une pesée existe déjà pour aujourd'hui
+            const existingIndex = pesees.findIndex(p => p.date === today);
+            if (existingIndex > -1) {
+                pesees[existingIndex].poids = nouveauPoids;
+            } else {
+                pesees.push({ date: today, poids: nouveauPoids });
+            }
 
-                        localStorage.setItem('pesees-hebdo', JSON.stringify(pesees));
-                        input.value = '';
-                        calculerSuiviPoids();
-                        alert("Poids mis à jour !");
-                    }
+            localStorage.setItem('pesees-hebdo', JSON.stringify(pesees));
+            input.value = '';
+            calculerSuiviPoids();
+            alert("Poids mis à jour !");
+        }
 
-                    function createTimelineItems() {
-                        let html = '';
-                        for (let i = 1; i <= 10; i++) {
-                            html += `<div class="timeline-item" onclick="afficherSemaine(${i})"
+        function createTimelineItems() {
+            let html = '';
+            for (let i = 1; i <= 10; i++) {
+                html += `<div class="timeline-item" onclick="afficherSemaine(${i})"
                 style="flex:0 0 auto; text-align:center; cursor:pointer; padding:5px;">
                 <div class="timeline-dot"
                     style="width:30px; height:30px; background:var(--primary-light); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto;">
                     S${i}</div>
                 <div class="timeline-label" style="font-size:10px; margin-top:4px;">Sem ${i}</div>
                 </div>`;
-                        }
-                        document.getElementById('timeline-items').innerHTML = html;
-                    }
+            }
+            document.getElementById('timeline-items').innerHTML = html;
+        }
 
-                    function afficherSemaine(num) {
-                        semaineActuelle = 'S' + num;
-                        afficherMenu();
-                        calculerProgression();
-                        calculerProgressionProgramme(); // Update global progress bar
-                        document.querySelectorAll('.timeline-dot').forEach((el, idx) => {
-                            el.style.background = (idx + 1) === num ? 'var(--primary)' : 'var(--primary-light)';
-                        });
-                    }
+        function afficherSemaine(num) {
+            semaineActuelle = 'S' + num;
+            afficherMenu();
+            calculerProgression();
+            calculerProgressionProgramme(); // Update global progress bar
+            document.querySelectorAll('.timeline-dot').forEach((el, idx) => {
+                el.style.background = (idx + 1) === num ? 'var(--primary)' : 'var(--primary-light)';
+            });
+        }
 
-                    function afficherStackSupplements() {
-                        let html = '';
-                        for (const [cat, items] of Object.entries(STACK_SUPPLEMENTS_COMPLET.basique)) {
-                            html += `<div style="margin-bottom:15px;">
+        function afficherStackSupplements() {
+            let html = '';
+            for (const [cat, items] of Object.entries(STACK_SUPPLEMENTS_COMPLET.basique)) {
+                html += `<div style="margin-bottom:15px;">
                     <h4 style="color:var(--secondary); margin-bottom:5px;">${cat.toUpperCase()}</h4>
                     <ul style="list-style:none;">`;
-                            for (const [name, det] of Object.entries(items)) {
-                                html += `<li style="font-size:13px; margin-bottom:4px;"><strong>${name}:</strong> ${det.dose}
+                for (const [name, det] of Object.entries(items)) {
+                    html += `<li style="font-size:13px; margin-bottom:4px;"><strong>${name}:</strong> ${det.dose}
                                 <span style="color:#888;">(${det.prix})</span>
                             </li>`;
-                            }
-                            html += `</ul>
+                }
+                html += `</ul>
                 </div>`;
-                        }
-                        document.getElementById('supplements-container').innerHTML = html;
-                    }
-                </script>
+            }
+            document.getElementById('supplements-container').innerHTML = html;
+        }
+    </script>
 </body>
 
 </html>
-      
