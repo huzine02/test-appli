@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutri-Track Sèche 10 Sem - Hocine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nutri-Track Mobile</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,18 +16,17 @@
             --card-bg: #FFFFFF;
             --text-main: #2D3436;
             --text-light: #636E72;
-            --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.08);
-            --shadow-hover: 0 25px 50px rgba(108, 92, 231, 0.15);
-            --radius: 30px;
-            --danger: #ff7675;
+            --shadow-soft: 0 10px 20px rgba(0, 0, 0, 0.05);
+            --radius: 20px;
+            --nav-height: 70px;
             --success: #55efc4;
-            --nav-height: 80px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -35,308 +34,68 @@
             background: var(--bg-gradient);
             color: var(--text-main);
             min-height: 100vh;
-            padding: 0 0 var(--nav-height) 0;
+            padding-bottom: calc(var(--nav-height) + 20px);
             overflow-x: hidden;
         }
 
         .container {
-            max-width: 600px;
+            width: 100%;
+            max-width: 100%;
+            padding: 15px;
             margin: 0 auto;
-            padding: 20px;
         }
 
-        /* --- HEADER --- */
+        /* HEADER */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding-top: 10px;
+            margin-bottom: 20px;
+            padding: 10px 5px;
         }
 
         .header-text h1 {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 800;
             color: var(--text-main);
-            text-transform: capitalize;
         }
 
         .header-text p {
-            color: var(--text-light);
             font-size: 14px;
-            margin-bottom: 2px;
+            color: var(--text-light);
         }
 
-        /* --- ILLUSTRATIONS & AVATAR --- */
-        .avatar-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
+        .season-badge {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
             box-shadow: var(--shadow-soft);
-            border: 2px solid white;
+            backdrop-filter: blur(5px);
         }
 
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-soft);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .card-illustration {
-            position: absolute;
-            right: -10px;
-            top: -10px;
-            width: 80px;
-            height: 80px;
-            opacity: 0.9;
-            transform: rotate(10deg);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .card-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        h2,
-        h3 {
-            color: var(--text-main);
-            margin-bottom: 15px;
-        }
-
-        /* --- SEMAINIER (Weekly Calendar) --- */
-        .semainier-scroll {
-            display: flex;
-            gap: 8px;
+        /* TIMELINE */
+        .timeline-wrapper {
             overflow-x: auto;
-            padding-bottom: 10px;
+            padding: 10px 0;
+            margin: 0 -15px 20px -15px;
+            padding-left: 15px;
             scrollbar-width: none;
-            position: relative;
-            z-index: 1;
         }
 
-        .semainier-scroll::-webkit-scrollbar {
+        .timeline-wrapper::-webkit-scrollbar {
             display: none;
         }
 
-        .jour-badge {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-width: 48px;
-            height: 70px;
-            background: white;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .jour-badge.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
-        }
-
-        .jour-badge.today {
-            border-color: var(--secondary);
-            background: #fff0f0;
-            transform: scale(1.05);
-            box-shadow: 0 8px 15px rgba(255, 118, 117, 0.2);
-        }
-
-        .jour-badge span {
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .jour-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            margin-top: 8px;
-            background-color: #dfe6e9;
-        }
-
-        .jour-badge.training .jour-dot {
-            background-color: var(--secondary);
-        }
-
-        .jour-badge.repos .jour-dot {
-            background-color: var(--success);
-        }
-
-        .jour-badge.active .jour-dot {
-            background-color: white;
-        }
-
-        /* --- PROGRESSION --- */
-        .progress-container {
-            background: #f1f2f6;
-            border-radius: 15px;
-            height: 12px;
-            width: 100%;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light));
-            width: 0%;
-            transition: width 0.5s ease;
-            border-radius: 15px;
-            color: white;
-            font-weight: 700;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-        }
-
-        .macro-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            text-align: center;
-        }
-
-        .macro-item {
-            background: #FAFAFA;
-            padding: 10px;
-            border-radius: 15px;
-        }
-
-        .macro-value {
-            font-weight: 800;
-            font-size: 16px;
-            color: var(--primary);
-        }
-
-        .macro-label {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-
-        /* --- MEALS --- */
-        .nutrition-section {
-            margin-bottom: 20px;
-        }
-
-        .meal {
-            background: #FAFAFA;
-            border-radius: 20px;
-            padding: 15px;
-            margin-top: 10px;
-        }
-
-        .meal-details {
+        .timeline-container {
             display: flex;
             gap: 15px;
-            font-size: 13px;
-            color: var(--text-light);
-            margin-bottom: 10px;
+            width: max-content;
+            padding-right: 15px;
         }
 
-        .option-selector {
-            margin: 10px 0;
-        }
-
-        .option-btn {
-            padding: 8px 16px;
-            border: 1px solid var(--primary-light);
-            background: white;
-            color: var(--primary);
-            border-radius: 20px;
-            margin-right: 5px;
-            cursor: pointer;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .option-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .validation-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-            padding: 10px;
-            background: white;
-            border-radius: 15px;
-            cursor: pointer;
-            border: 1px solid #eee;
-        }
-
-        .validation-checkbox.validated {
-            background: #ecfdf5;
-            border-color: var(--success);
-            color: #00b894;
-        }
-
-        /* --- BOTTOM NAV --- */
-        .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 500px;
-            background: white;
-            height: 70px;
-            border-radius: 35px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            padding: 0 10px;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            font-size: 12px;
-            cursor: pointer;
-            width: 60px;
-            transition: all 0.3s;
-        }
-
-        .nav-item.active {
-            color: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        .nav-icon {
-            font-size: 24px;
-            margin-bottom: 4px;
-        }
-
-        /* --- CONTENT SECTIONS --- */
+        /* TABS */
         .tab-content {
             display: none;
             animation: fadeIn 0.3s ease;
@@ -357,224 +116,398 @@
                 transform: translateY(0);
             }
         }
+
+        /* CARDS */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* NUTRITION SECTION */
+        .nutrition-section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .nutrition-section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-icon {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+            margin-right: 10px;
+            vertical-align: middle;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .meal-details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .detail-label {
+            font-size: 10px;
+            color: var(--text-light);
+            font-weight: 400;
+            margin-bottom: 2px;
+        }
+
+        /* SEMAINIER */
+        .semainier {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .jour-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            width: 40px;
+        }
+
+        .jour-badge span {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .jour-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #dfe6e9;
+            transition: 0.3s;
+        }
+
+        .jour-badge.training .jour-dot {
+            background: var(--primary);
+        }
+
+        .jour-badge.repos .jour-dot {
+            background: var(--secondary);
+        }
+
+        .jour-badge.today span {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        /* BOTTOM NAV */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height);
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+            z-index: 100;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #b2bec3;
+            font-size: 12px;
+            font-weight: 600;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* BUTTONS & INPUTS */
+        button {
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f1f2f6;
+            border-radius: 12px;
+            text-align: left;
+            font-size: 14px;
+            color: var(--text-light);
+            transition: 0.2s;
+        }
+
+        .option-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+
+        .validation-checkbox {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f1f2f6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .validation-checkbox.validated {
+            background: var(--success);
+            color: white;
+        }
+
+        /* PROGRESS BARS */
+        .progress-container {
+            background: #dfe6e9;
+            border-radius: 10px;
+            height: 10px;
+            width: 100%;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
     </style>
 </head>
 
 <body>
 
     <div class="container">
-        <!-- HEADER -->
         <header>
             <div class="header-text">
-                <p>Bonjour,</p>
-                <h1 id="header-date">Chargement...</h1>
-                <span id="season-badge"
-                    style="background:var(--accent); padding:5px 10px; border-radius:15px; font-size:12px; font-weight:bold; display:inline-block; margin-top:5px;">🍂
-                    AUTOMNE</span>
+                <h1>Nutri-Track</h1>
+                <p id="date-display">Chargement...</p>
             </div>
-            <div id="semainier-container" class="semainier-scroll">
-                <!-- JS injected -->
-            </div>
+            <div id="season-badge" class="season-badge">❄️ HIVER</div>
         </header>
 
-        <!-- GLOBAL PROGRESSION (New) -->
-        <div class="card">
-            <div class="card-content">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <h3>Programme 10 Semaines</h3>
-                    <span id="global-week-display" style="font-weight:bold; color:var(--primary);">S1/10</span>
-                </div>
-                <div class="progress-container" style="height:8px; margin:0;">
-                    <div id="global-progress-bar" class="progress-bar" style="width:0%"></div>
-                </div>
-                <div id="timeline-items"
-                    style="display:flex; overflow-x:auto; gap:10px; margin-top:15px; padding-bottom:5px; scrollbar-width:none;">
-                    <!-- JS injected -->
-                </div>
+        <!-- Timeline -->
+        <div class="timeline-wrapper">
+            <div id="timeline-items" class="timeline-container">
+                <!-- JS Injected -->
             </div>
         </div>
 
-        <!-- POIDS (New) -->
-        <div class="card">
-            <div class="card-content">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h3>Suivi Poids</h3>
-                    <span id="poids-ecart" style="font-weight:bold; font-size:14px;">-0.0 kg</span>
+        <main>
+            <!-- DASHBOARD TAB -->
+            <div id="tab-dashboard" class="tab-content">
+                <div class="card">
+                    <h3>📊 Progression Programme</h3>
+                    <div class="progress-container" style="height: 20px; margin-top: 15px;">
+                        <div id="global-progress-bar" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <div style="text-align: right; font-size: 12px; margin-top: 5px; color: var(--text-light);">
+                        Semaine <span id="global-week-display">1/10</span>
+                    </div>
                 </div>
-                <div style="display:flex; align-items:baseline; gap:5px; margin-top:5px;">
-                    <span id="poids-actuel" style="font-size:24px; font-weight:800; color:var(--text-main);">85
-                        kg</span>
-                    <span style="font-size:12px; color:var(--text-light);">actuel (S<span
-                            id="poids-semaine">1</span>)</span>
-                </div>
-                <p style="font-size:12px; color:var(--text-light); margin-top:5px;">Objectif: -0.5kg / semaine</p>
 
-                <div
-                    style="display:flex; align-items:center; gap:10px; margin-top:15px; padding-top:15px; border-top:1px solid #f1f2f6;">
-                    <input type="number" id="poids-input" placeholder="Nouveau poids" step="0.1"
-                        style="flex:1; padding:10px; border:1px solid #dfe6e9; border-radius:12px; font-family:'Nunito'; font-size:14px;">
-                    <button onclick="updatePoids()"
-                        style="background:var(--primary); color:white; border:none; padding:10px 20px; border-radius:12px; cursor:pointer; font-weight:bold; font-family:'Nunito';">
-                        OK
-                    </button>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="poids-actuel">-- kg</div>
+                        <div class="stat-label">Poids Actuel</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="poids-ecart" style="color: var(--success);">--</div>
+                        <div class="stat-label">Écart Objectif</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>⚖️ Nouvelle Pesée</h3>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <input type="number" id="poids-input" placeholder="Poids en kg" step="0.1"
+                            style="flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #dfe6e9; font-size: 16px;">
+                        <button onclick="updatePoids()"
+                            style="background: var(--primary); color: white; padding: 0 20px; border-radius: 12px; font-weight: 700;">OK</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- DASHBOARD TAB -->
-        <div id="tab-dashboard" class="tab-content active">
-            <!-- Progression Card -->
-            <div class="card">
-                <div class="card-content">
-                    <h3>Progression du Jour</h3>
-                    <div id="day-display" style="font-weight:bold; color:var(--primary); margin-bottom:10px;">
-                        Chargement...</div>
+            <!-- TRAINING TAB (Active by default) -->
+            <div id="tab-training" class="tab-content active">
+                <div id="semainier-container" class="semainier">
+                    <!-- JS Injected -->
+                </div>
 
+                <div id="day-display" class="card"
+                    style="text-align: center; font-weight: 800; color: var(--primary); padding: 15px;">
+                    🏋️ JOUR TRAINING
+                </div>
+
+                <div class="card">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3>🔥 Calories du jour</h3>
+                        <button onclick="editObjectifCalories()"
+                            style="font-size: 12px; color: var(--primary); background: none; text-decoration: underline;">Modifier</button>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px;">
+                        <span><span id="cal-actuel">0</span> / <span id="cal-total">2800</span> kcal</span>
+                        <span id="progress-bar">0%</span>
+                    </div>
                     <div class="progress-container">
-                        <div id="progress-bar" class="progress-bar">0%</div>
+                        <div id="progress-bar-visual" class="progress-bar" style="width: 0%"></div>
                     </div>
-
-                    <div class="macro-grid">
-                        <div class="macro-item">
-                            <div class="macro-value"><span id="prot-actuel">0</span>/<span id="prot-total">0</span>
-                            </div>
-                            <div class="macro-label">Protéines</div>
-                        </div>
-                        <div class="macro-item">
-                            <div class="macro-value"><span id="gluc-actuel">0</span>/<span id="gluc-total">0</span>
-                            </div>
-                            <div class="macro-label">Glucides</div>
-                        </div>
-                        <div class="macro-item">
-                            <div class="macro-value"><span id="lip-actuel">0</span>/<span id="lip-total">0</span></div>
-                            <div class="macro-label">Lipides</div>
-                        </div>
-                    </div>
-                    <div style="text-align:center; margin-top:15px; font-size:14px;">
-                        Total Calories: <strong onclick="editObjectifCalories()"
-                            style="cursor:pointer; border-bottom:1px dashed var(--text-main);"
-                            title="Modifier l'objectif"><span id="cal-actuel">0</span> / <span
-                                id="cal-total">0</span></strong>
+                    <div class="meal-details" style="margin-top: 15px; background: none; padding: 0;">
+                        <div class="detail-item"><span class="stat-value" style="font-size: 16px;"
+                                id="prot-actuel">0</span><span class="detail-label">Prot (/<span
+                                    id="prot-total">0</span>)</span></div>
+                        <div class="detail-item"><span class="stat-value" style="font-size: 16px;"
+                                id="gluc-actuel">0</span><span class="detail-label">Gluc (/<span
+                                    id="gluc-total">0</span>)</span></div>
+                        <div class="detail-item"><span class="stat-value" style="font-size: 16px;"
+                                id="lip-actuel">0</span><span class="detail-label">Lip (/<span
+                                    id="lip-total">0</span>)</span></div>
                     </div>
                 </div>
+
+                <div id="menu-container">
+                    <!-- JS Injected -->
+                </div>
             </div>
 
-            <!-- Menu du Jour -->
-            <div class="card">
-                <img src="assets/meals.png" class="card-illustration" alt="Meals">
-                <div class="card-content">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <h3>Menu du Jour</h3>
-                        <span id="semaine-actuelle-label" style="font-size:12px; color:var(--text-light);">S1</span>
+            <!-- PROFILE TAB -->
+            <div id="tab-profile" class="tab-content">
+                <div class="card">
+                    <h3>⚙️ Configuration</h3>
+                    <div style="margin-top: 15px;">
+                        <label
+                            style="font-size: 14px; color: var(--text-light); display: block; margin-bottom: 8px;">Date
+                            de début</label>
+                        <input type="date" id="date-debut-input" onchange="updateDateDebut()"
+                            style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #dfe6e9; font-size: 16px;">
                     </div>
-                    <div id="menu-container">
-                        <!-- JS injected -->
+                </div>
+
+                <div class="card">
+                    <h3>📅 Jours d'entraînement</h3>
+                    <div id="config-jours-container"
+                        style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;">
+                        <!-- JS Injected -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>💊 Stack Compléments</h3>
+                    <div id="supplements-container" style="margin-top: 15px;">
+                        <!-- JS Injected -->
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- TRAINING TAB -->
-        <div id="tab-training" class="tab-content">
-            <div class="card">
-                <h3>Entraînement</h3>
-                <p>Programme à venir...</p>
-            </div>
-        </div>
-
-        <!-- PROFILE TAB -->
-        <div id="tab-profile" class="tab-content">
-            <div class="card">
-                <h3>Configuration Semaine Type</h3>
-                <p style="font-size:13px; color:var(--text-light); margin-bottom:15px;">Cochez vos jours d'entraînement
-                    habituels :</p>
-                <div id="config-jours-container" style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
-                </div>
-
-                <h4 style="margin-bottom:10px; color:var(--text-main);">Date de début du programme</h4>
-                <div style="display:flex; gap:10px;">
-                    <input type="date" id="date-debut-input" onchange="updateDateDebut()"
-                        style="padding:10px; border:1px solid #dfe6e9; border-radius:12px; font-family:'Nunito'; flex:1;">
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Préférences Alimentaires</h3>
-                <p style="font-size:13px; color:var(--text-light); margin-bottom:15px;">Vos choix par défaut pour gagner
-                    du temps :</p>
-
-                <div style="margin-bottom:15px;">
-                    <label style="font-size:14px; font-weight:600; display:block; margin-bottom:5px;">Collation Training
-                        (15:45)</label>
-                    <select id="pref-collation-training" onchange="savePreference('collation-training', this.value)"
-                        style="width:100%; padding:10px; border-radius:10px; border:1px solid #dfe6e9;">
-                        <option value="">-- Choisir --</option>
-                        <option value="A">Option A - Clean (Whey + Avoine)</option>
-                        <option value="B">Option B - Pressé (HiPro + Banane)</option>
-                    </select>
-                </div>
-
-                <div style="margin-bottom:15px;">
-                    <label style="font-size:14px; font-weight:600; display:block; margin-bottom:5px;">Dîner Training
-                        (19:30)</label>
-                    <select id="pref-diner-training" onchange="savePreference('diner-training', this.value)"
-                        style="width:100%; padding:10px; border-radius:10px; border:1px solid #dfe6e9;">
-                        <option value="">-- Choisir --</option>
-                        <option value="A">Option A - Saumon</option>
-                        <option value="B">Option B - Poulet</option>
-                        <option value="C">Option C - Œufs</option>
-                    </select>
-                </div>
-
-                <div style="margin-bottom:15px;">
-                    <label style="font-size:14px; font-weight:600; display:block; margin-bottom:5px;">Collation Repos
-                        (16:00)</label>
-                    <select id="pref-collation-repos" onchange="savePreference('collation-repos', this.value)"
-                        style="width:100%; padding:10px; border-radius:10px; border:1px solid #dfe6e9;">
-                        <option value="">-- Choisir --</option>
-                        <option value="A">Option A - Plaisir (Pain + Beurre Cacahuète)</option>
-                        <option value="B">Option B - Santé (Skyr + Amandes)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Stack Suppléments</h3>
-                <div id="supplements-container"></div>
-            </div>
-        </div>
-
+        </main>
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
     <nav class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('dashboard')">
-            <span class="nav-icon">🏠</span>
-            <span>Accueil</span>
+        <div class="nav-item" onclick="switchTab('dashboard')">
+            <div class="nav-icon">📊</div>
+            <span>Suivi</span>
         </div>
-        <div class="nav-item" onclick="switchTab('training')">
-            <span class="nav-icon">🏋️</span>
-            <span>Sport</span>
+        <div class="nav-item active" onclick="switchTab('training')">
+            <div class="nav-icon">🍽️</div>
+            <span>Journal</span>
         </div>
         <div class="nav-item" onclick="switchTab('profile')">
-            <span class="nav-icon">👤</span>
+            <div class="nav-icon">👤</div>
             <span>Profil</span>
         </div>
     </nav>
 
     <script>
-        // --- DATA ---
+        // --- CONSTANTS & DATA ---
         const SAISONS = {
-            automne: { nom: 'Automne', mois: [9, 10, 11], emoji: '🍂', fruits: ['Pomme', 'Raisin', 'Poire'], legumes: ['Courge', 'Carotte', 'Chou'] },
             hiver: { nom: 'Hiver', mois: [12, 1, 2], emoji: '❄️', fruits: ['Orange', 'Kiwi'], legumes: ['Poireau', 'Endive'] },
             printemps: { nom: 'Printemps', mois: [3, 4, 5], emoji: '🌸', fruits: ['Fraise', 'Cerise'], legumes: ['Asperge', 'Radis'] },
-            ete: { nom: 'Été', mois: [6, 7, 8], emoji: '☀️', fruits: ['Melon', 'Pêche'], legumes: ['Tomate', 'Poivron'] }
+            ete: { nom: 'Été', mois: [6, 7, 8], emoji: '☀️', fruits: ['Melon', 'Pêche'], legumes: ['Tomate', 'Poivron'] },
+            automne: { nom: 'Automne', mois: [9, 10, 11], emoji: '🍂', fruits: ['Raisin', 'Figue'], legumes: ['Courge', 'Champignon'] }
         };
+
+        const JOURS_SEMAINE = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
 
         const PLAN_HYBRIDE = {
             dateDebut: localStorage.getItem('dateDebutProgramme') || '2024-01-01',
             semaines: {}
         };
+
         for (let i = 1; i <= 10; i++) {
             PLAN_HYBRIDE.semaines['S' + i] = {
                 nom: i <= 4 ? 'Phase Adaptation' : 'Phase Intensive',
@@ -588,7 +521,8 @@
 
         const MENUS_BASE = {
             matin: {
-                nom: '🌅 ROUTINE MATIN (À JEUN)',
+                nom: 'Hydratation & Éveil',
+                icon: 'assets/icon_morning.png',
                 heure: '07:30',
                 details: [
                     '💧 500ml Eau + Jus 1/2 citron',
@@ -600,7 +534,8 @@
                 repas: [
                     {
                         id: 'repas1_train',
-                        nom: '🕛 REPAS 1 - Rupture Jeûne',
+                        nom: 'Déjeuner Énergétique',
+                        icon: 'assets/icon_lunch.png',
                         heure: '12:00',
                         calories: 900,
                         macros: { P: 60, G: 90, L: 30 },
@@ -616,7 +551,8 @@
                     },
                     {
                         id: 'repas2_train',
-                        nom: '🕒 REPAS 2 - Post-Training',
+                        nom: 'Récupération Musculaire',
+                        icon: 'assets/icon_snack.png',
                         heure: '15:45',
                         calories: 600,
                         macros: { P: 40, G: 80, L: 10 },
@@ -630,7 +566,8 @@
                     },
                     {
                         id: 'repas3_train',
-                        nom: '🕢 REPAS 3 - Dîner',
+                        nom: 'Dîner Léger & Digestion',
+                        icon: 'assets/icon_dinner.png',
                         heure: '19:30',
                         calories: 800,
                         macros: { P: 50, G: 60, L: 35 },
@@ -650,7 +587,8 @@
                 repas: [
                     {
                         id: 'repas1_repos',
-                        nom: '🕛 REPAS 1',
+                        nom: 'Déjeuner Équilibré',
+                        icon: 'assets/icon_lunch.png',
                         heure: '12:00',
                         calories: 700,
                         macros: { P: 50, G: 50, L: 30 },
@@ -665,7 +603,8 @@
                     },
                     {
                         id: 'repas2_repos',
-                        nom: '🕓 COLLATION',
+                        nom: 'Collation Santé',
+                        icon: 'assets/icon_snack.png',
                         heure: '16:00',
                         calories: 400,
                         macros: { P: 30, G: 40, L: 15 },
@@ -677,7 +616,8 @@
                     },
                     {
                         id: 'repas3_repos',
-                        nom: '🕢 REPAS 3',
+                        nom: 'Dîner Low-Carb',
+                        icon: 'assets/icon_dinner.png',
                         heure: '19:30',
                         calories: 600,
                         macros: { P: 45, G: 30, L: 30 },
@@ -693,7 +633,8 @@
             vendredi: {
                 repas3: {
                     id: 'repas3_vendredi',
-                    nom: '🗓️ VENDREDI SOIR (80/20 Safe)',
+                    nom: 'Plaisir Contrôlé (80/20)',
+                    icon: 'assets/icon_dinner.png',
                     heure: '20:00',
                     calories: 1200,
                     macros: { P: 40, G: 100, L: 50 },
@@ -719,13 +660,15 @@
             }
         };
 
-        const AJUSTEMENTS_MACROS = {
-            optionA: { nom: 'Option A - Équilibré', desc: 'Ajustements légers', details: 'Poulet +20g, Riz -8g glucides' },
-            optionB: { nom: 'Option B - Strict', desc: 'Si plateau > 2 semaines', details: 'Suppression banane, Riz -17g' }
-        };
-
         // --- STATE ---
-        function getSaison() { const mois = new Date().getMonth() + 1; for (const [key, saison] of Object.entries(SAISONS)) { if (saison.mois.includes(mois)) return saison } return SAISONS.automne }
+        function getSaison() {
+            const mois = new Date().getMonth() + 1;
+            for (const [key, saison] of Object.entries(SAISONS)) {
+                if (saison.mois.includes(mois)) return saison;
+            }
+            return SAISONS.automne;
+        }
+
         let SAISON_ACTUELLE = getSaison();
         let semaineActuelle = 'S1';
         let jourType = 'training';
@@ -739,38 +682,39 @@
         window.onload = function () {
             updateDateDisplay();
             updateSeasonDisplay();
-            // Init date input
+
             const dateInput = document.getElementById('date-debut-input');
             if (dateInput) dateInput.value = PLAN_HYBRIDE.dateDebut;
 
-            // Init preferences selectors
-            for (const [key, val] of Object.entries(preferencesMenu)) {
-                const el = document.getElementById('pref-' + key);
-                if (el) el.value = val;
-            }
-
             semaineActuelle = getSemaineActuelle();
+            createTimelineItems();
             afficherSemainier();
+            renderConfigJours();
             checkDayAuto();
             afficherMenu();
             calculerProgression();
-            createTimelineItems();
-            afficherStackSupplements();
-            renderConfigJours();
             calculerProgressionProgramme();
             calculerSuiviPoids();
+            afficherStackSupplements();
         };
 
-        // --- LOGIC ---
-        const JOURS_SEMAINE = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-        const MOIS_ANNEE = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-
+        // --- FUNCTIONS ---
         function updateDateDisplay() {
-            const today = new Date();
-            const jour = JOURS_SEMAINE[today.getDay()];
-            const num = today.getDate();
-            const mois = MOIS_ANNEE[today.getMonth()];
-            document.getElementById('header-date').textContent = `${jour} ${num} ${mois}`;
+            const options = { weekday: 'long', day: 'numeric', month: 'long' };
+            document.getElementById('date-display').textContent = new Date().toLocaleDateString('fr-FR', options);
+        }
+
+        function updateSeasonDisplay() {
+            SAISON_ACTUELLE = getSaison();
+            document.getElementById('season-badge').textContent = SAISON_ACTUELLE.emoji + ' ' + SAISON_ACTUELLE.nom.toUpperCase();
+        }
+
+        function getSemaineActuelle() {
+            const dateDebut = new Date(PLAN_HYBRIDE.dateDebut);
+            const aujourdhui = new Date();
+            const diffJours = Math.floor((aujourdhui - dateDebut) / (1000 * 60 * 60 * 24));
+            const numSemaine = Math.floor(diffJours / 7) + 1;
+            return 'S' + (numSemaine > 10 ? 10 : numSemaine < 1 ? 1 : numSemaine);
         }
 
         function updateDateDebut() {
@@ -782,39 +726,31 @@
                 afficherMenu();
                 calculerProgression();
                 calculerProgressionProgramme();
-                createTimelineItems(); // Update active dot
-                alert("Date de début mise à jour ! Semaine actuelle : " + semaineActuelle);
+                createTimelineItems();
             }
         }
 
-        function renderConfigJours() {
-            const container = document.getElementById('config-jours-container');
-            if (!container) return;
+        function createTimelineItems() {
             let html = '';
-            const ordre = [1, 2, 3, 4, 5, 6, 0];
-
-            ordre.forEach(idx => {
-                const isChecked = planningHebdo.includes(idx);
-                html += `<label style="display:flex; align-items:center; gap:8px; background:#f1f2f6; padding:8px 12px; border-radius:10px; cursor:pointer;">
-                    <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleConfigJour(${idx})">
-                    <span style="font-size:14px; font-weight:600; color:var(--text-main);">${JOURS_SEMAINE[idx]}</span>
-                </label>`;
-            });
-            container.innerHTML = html;
+            for (let i = 1; i <= 10; i++) {
+                const isActive = ('S' + i) === semaineActuelle;
+                html += `<div class="timeline-item" onclick="afficherSemaine(${i})" 
+                     style="flex: 0 0 auto; text-align: center; cursor: pointer; opacity: ${isActive ? '1' : '0.5'}; transform: ${isActive ? 'scale(1.1)' : 'scale(1)'}; transition: 0.3s;">
+                     <div class="timeline-dot" style="width: 40px; height: 40px; background: ${isActive ? 'var(--primary)' : 'var(--primary-light)'}; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-weight: bold;">
+                     ${i}
+                     </div>
+                     <div class="timeline-label" style="font-size: 10px; margin-top: 4px; font-weight: 600;">Sem ${i}</div>
+                     </div>`;
+            }
+            document.getElementById('timeline-items').innerHTML = html;
         }
 
-        function toggleConfigJour(dayIndex) {
-            const idx = planningHebdo.indexOf(dayIndex);
-            if (idx > -1) planningHebdo.splice(idx, 1);
-            else planningHebdo.push(dayIndex);
-
-            localStorage.setItem('planningHebdo', JSON.stringify(planningHebdo));
-            afficherSemainier();
-            renderConfigJours();
-
-            if (dayIndex === new Date().getDay()) {
-                checkDayAuto();
-            }
+        function afficherSemaine(num) {
+            semaineActuelle = 'S' + num;
+            afficherMenu();
+            calculerProgression();
+            calculerProgressionProgramme();
+            createTimelineItems();
         }
 
         function switchTab(tabName) {
@@ -826,65 +762,62 @@
             document.querySelectorAll('.nav-item')[icons[tabName]].classList.add('active');
         }
 
+        function renderConfigJours() {
+            const container = document.getElementById('config-jours-container');
+            if (!container) return;
+            let html = '';
+            const ordre = [1, 2, 3, 4, 5, 6, 0];
+            ordre.forEach(idx => {
+                const isChecked = planningHebdo.includes(idx);
+                html += `<label style="display: flex; align-items: center; gap: 8px; background: #f1f2f6; padding: 10px 15px; border-radius: 12px; cursor: pointer;">
+                        <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleConfigJour(${idx})">
+                        <span style="font-size: 14px; font-weight: 600; color: var(--text-main);">${JOURS_SEMAINE[idx]}</span>
+                     </label>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function toggleConfigJour(dayIndex) {
+            const idx = planningHebdo.indexOf(dayIndex);
+            if (idx > -1) planningHebdo.splice(idx, 1);
+            else planningHebdo.push(dayIndex);
+            localStorage.setItem('planningHebdo', JSON.stringify(planningHebdo));
+            afficherSemainier();
+            renderConfigJours();
+            if (dayIndex === new Date().getDay()) checkDayAuto();
+        }
+
         function afficherSemainier() {
             const todayIndex = new Date().getDay();
             let html = '';
             const ordreJours = [1, 2, 3, 4, 5, 6, 0];
-
             ordreJours.forEach(idx => {
                 const isTraining = planningHebdo.includes(idx);
                 const isToday = idx === todayIndex;
-                html += `<div class="jour-badge ${isTraining ? 'training' : 'repos'} ${isToday ? 'today' : ''}"
-                    onclick="toggleJourPlanning(${idx})">
-                    <span>${JOURS_SEMAINE[idx]}</span>
-                    <div class="jour-dot"></div>
-                </div>`;
+                html += `<div class="jour-badge ${isTraining ? 'training' : 'repos'} ${isToday ? 'today' : ''}" onclick="toggleJourPlanning(${idx})">
+                        <span>${JOURS_SEMAINE[idx]}</span>
+                        <div class="jour-dot"></div>
+                     </div>`;
             });
             document.getElementById('semainier-container').innerHTML = html;
         }
 
         function toggleJourPlanning(dayIndex) {
-            const idx = planningHebdo.indexOf(dayIndex);
-            if (idx > -1) planningHebdo.splice(idx, 1);
-            else planningHebdo.push(dayIndex);
-
-            localStorage.setItem('planningHebdo', JSON.stringify(planningHebdo));
-            afficherSemainier();
-
-            if (dayIndex === new Date().getDay()) {
-                checkDayAuto();
-            }
+            toggleConfigJour(dayIndex);
         }
 
         function checkDayAuto() {
             const todayIndex = new Date().getDay();
             const isTrainingToday = planningHebdo.includes(todayIndex);
             const newType = isTrainingToday ? 'training' : 'repos';
-
-            if (jourType !== newType) {
-                setDayType(newType);
-            } else {
-                loadDayType();
-            }
-        }
-
-        function getSemaineActuelle() {
-            const dateDebut = new Date(PLAN_HYBRIDE.dateDebut);
-            const aujourdhui = new Date();
-            const diffJours = Math.floor((aujourdhui - dateDebut) / (1000 * 60 * 60 * 24));
-            const numSemaine = Math.floor(diffJours / 7) + 1;
-            return 'S' + (numSemaine > 10 ? 10 : numSemaine < 1 ? 1 : numSemaine);
-        }
-
-        function updateSeasonDisplay() {
-            SAISON_ACTUELLE = getSaison();
-            document.getElementById('season-badge').textContent = SAISON_ACTUELLE.emoji + ' ' + SAISON_ACTUELLE.nom.toUpperCase();
+            if (jourType !== newType) setDayType(newType);
+            else loadDayType();
         }
 
         function setDayType(type) {
             jourType = type;
             localStorage.setItem('jourType', type);
-            document.getElementById('day-display').textContent = type === 'training' ? '🏋️ JOUR TRAINING' : '💤 JOUR REPOS';
+            loadDayType();
             afficherMenu();
             calculerProgression();
         }
@@ -893,26 +826,19 @@
             const saved = localStorage.getItem('jourType');
             if (saved) jourType = saved;
             document.getElementById('day-display').textContent = jourType === 'training' ? '🏋️ JOUR TRAINING' : '💤 JOUR REPOS';
-        }
-
-        function savePreference(key, value) {
-            preferencesMenu[key] = value;
-            localStorage.setItem('preferences-menu', JSON.stringify(preferencesMenu));
-            afficherMenu(); // Refresh menu to apply new default
-            calculerProgression();
+            document.getElementById('day-display').style.color = jourType === 'training' ? 'var(--primary)' : 'var(--secondary)';
         }
 
         function afficherMenu() {
             const menu = MENUS_BASE[jourType];
-            const config = PLAN_HYBRIDE.semaines[semaineActuelle] || PLAN_HYBRIDE.semaines['S1'];
-            document.getElementById('semaine-actuelle-label').textContent = `${semaineActuelle} - ${config.nom.toUpperCase()}`;
-
             let html = '';
 
             // 1. ROUTINE MATIN
             const matin = MENUS_BASE.matin;
             html += `<div class="nutrition-section" style="background:#fff5f0; padding:15px; border-radius:20px; border:1px solid #ffeaa7; margin-bottom:20px;">
-                <h3 style="color:#d35400; margin-bottom:10px;">${matin.nom}</h3>
+                <h3 style="color:#d35400; margin-bottom:10px; display:flex; align-items:center;">
+                    <img src="${matin.icon}" class="menu-icon"> ${matin.nom}
+                </h3>
                 <ul style="list-style:none;">
                     ${matin.details.map(d => `<li style="margin-bottom:5px; font-size:13px;">${d}</li>`).join('')}
                 </ul>
@@ -920,10 +846,9 @@
 
             // 2. REPAS
             menu.repas.forEach(repas => {
-                // LOGIQUE VENDREDI SOIR
                 const dayIndex = new Date().getDay();
                 let currentRepas = repas;
-                let isVendrediSoir = (dayIndex === 5 && repas.id.includes('repas3')); // 5 = Vendredi
+                let isVendrediSoir = (dayIndex === 5 && repas.id.includes('repas3'));
 
                 if (isVendrediSoir) {
                     currentRepas = MENUS_BASE.vendredi.repas3;
@@ -932,46 +857,38 @@
                 const valide = isRepasValide(currentRepas.id);
 
                 html += `<div class="nutrition-section">
-                    <div style="display:flex; justify-content:space-between; align-items:baseline;">
-                        <h3>${currentRepas.heure} - ${currentRepas.nom}</h3>
-                        ${isVendrediSoir ? '<span style="font-size:10px; background:#ffeaa7; padding:2px 6px; border-radius:10px;">🎉 80/20</span>' : ''}
-                    </div>
-                    <div class="meal">
-                        <div class="meal-details">
-                            <div class="detail-item"><span class="detail-label">Cal:</span> ${currentRepas.calories}</div>
-                            <div class="detail-item"><span class="detail-label">P:</span> ${currentRepas.macros.P}g</div>
-                            <div class="detail-item"><span class="detail-label">G:</span> ${currentRepas.macros.G}g</div>
-                            <div class="detail-item"><span class="detail-label">L:</span> ${currentRepas.macros.L}g</div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                            <h3 style="display:flex; align-items:center;">
+                                <img src="${currentRepas.icon || 'assets/icon_lunch.png'}" class="menu-icon">
+                                ${currentRepas.heure} - ${currentRepas.nom}
+                            </h3>
+                            ${isVendrediSoir ? '<span style="font-size: 10px; background: #ffeaa7; padding: 4px 8px; border-radius: 10px;">🎉 80/20</span>' : ''}
                         </div>
-                        ${currentRepas.desc ? `<p style="font-size:12px; color:var(--text-light); margin-bottom:10px; font-style:italic;">${currentRepas.desc}</p>` : ''}
+                        
+                        <div class="meal-details">
+                            <div class="detail-item"><span class="stat-value" style="font-size: 16px;">${currentRepas.calories}</span><span class="detail-label">Kcal</span></div>
+                            <div class="detail-item"><span class="stat-value" style="font-size: 16px;">${currentRepas.macros.P}</span><span class="detail-label">Prot</span></div>
+                            <div class="detail-item"><span class="stat-value" style="font-size: 16px;">${currentRepas.macros.G}</span><span class="detail-label">Gluc</span></div>
+                            <div class="detail-item"><span class="stat-value" style="font-size: 16px;">${currentRepas.macros.L}</span><span class="detail-label">Lip</span></div>
+                        </div>
+
+                        ${currentRepas.desc ? `<p style="font-size: 13px; color: var(--text-light); margin-bottom: 15px; font-style: italic;">${currentRepas.desc}</p>` : ''}
+
+                        ${currentRepas.complements ? `<div style="margin-bottom: 15px; font-size: 13px; background: #eef2f3; padding: 10px; border-radius: 10px;"><strong>💊 Compléments:</strong> ${currentRepas.complements.join(', ')}</div>` : ''}
                         `;
 
-                // COMPLEMENTS
-                if (currentRepas.complements) {
-                    html += `<div style="margin-bottom:10px; font-size:12px; background:#eef2f3; padding:8px; border-radius:10px;">
-                        <strong>💊 Compléments:</strong> ${currentRepas.complements.join(', ')}
-                    </div>`;
-                }
-
-                // CONTENU (ASSIETTE ou OPTIONS)
+                // OPTIONS / ASSIETTE
                 if (currentRepas.options) {
                     const today = new Date().toISOString().split('T')[0];
                     const optionKey = `${today}-${currentRepas.id}`;
-
-                    // Smart Default : Preference or First Option
                     let defaultOption = currentRepas.options[0].id;
                     if (currentRepas.prefKey && preferencesMenu[currentRepas.prefKey]) {
                         defaultOption = preferencesMenu[currentRepas.prefKey];
                     }
-
                     const optionSelectionnee = optionsSelectionnees[optionKey] || defaultOption;
+                    if (!optionsSelectionnees[optionKey]) optionsSelectionnees[optionKey] = defaultOption;
 
-                    // Save default if not set
-                    if (!optionsSelectionnees[optionKey]) {
-                        optionsSelectionnees[optionKey] = defaultOption;
-                    }
-
-                    html += `<div class="option-selector"><strong>🔄 Choix option :</strong><br>`;
+                    html += `<div style="margin-bottom: 15px;"><strong>🔄 Choix option :</strong><br>`;
                     currentRepas.options.forEach(opt => {
                         const isActive = opt.id === optionSelectionnee;
                         html += `<button class="option-btn ${isActive ? 'active' : ''}" onclick="selectOption('${currentRepas.id}', '${opt.id}')">${opt.nom}</button>`;
@@ -980,31 +897,26 @@
 
                     const optionChoisie = currentRepas.options.find(o => o.id === optionSelectionnee);
                     if (optionChoisie) {
-                        html += `<div class="meal-foods">
-                            <ul style="padding-left:20px;">${optionChoisie.aliments.map(a => `<li>${a}</li>`).join('')}</ul>
-                        </div>`;
+                        html += `<ul style="padding-left: 20px; font-size: 14px;">${optionChoisie.aliments.map(a => `<li style="margin-bottom: 5px;">${a}</li>`).join('')}</ul>`;
                     }
                 } else if (currentRepas.assiette) {
-                    html += `<div class="meal-foods"><strong>🍽️ L'Assiette (1 choix/ligne) :</strong>
-                        <ul style="padding-left:20px;">${currentRepas.assiette.map(a => `<li>${a}</li>`).join('')}</ul>
-                    </div>`;
+                    html += `<div style="margin-bottom: 10px;"><strong>🍽️ L'Assiette :</strong></div>
+                         <ul style="padding-left: 20px; font-size: 14px;">${currentRepas.assiette.map(a => `<li style="margin-bottom: 5px;">${a}</li>`).join('')}</ul>`;
                 } else if (currentRepas.aliments) {
-                    html += `<div class="meal-foods">
-                        <ul style="padding-left:20px;">${currentRepas.aliments.map(a => `<li>${a}</li>`).join('')}</ul>
-                    </div>`;
+                    html += `<ul style="padding-left: 20px; font-size: 14px;">${currentRepas.aliments.map(a => `<li style="margin-bottom: 5px;">${a}</li>`).join('')}</ul>`;
                 }
 
                 if (currentRepas.dessert) {
-                    html += `<div style="margin-top:10px; font-size:13px; color:var(--primary);"><strong>🍨 Dessert :</strong> ${currentRepas.dessert}</div>`;
+                    html += `<div style="margin-top: 15px; font-size: 14px; color: var(--primary);"><strong>🍨 Dessert :</strong> ${currentRepas.dessert}</div>`;
                 }
 
                 html += `<div class="validation-checkbox ${valide ? 'validated' : ''}" onclick="toggleRepas('${currentRepas.id}')">
                         <input type="checkbox" ${valide ? 'checked' : ''} onclick="event.stopPropagation()">
                         <span><strong>${valide ? '✅ Validé' : '⏸️ À valider'}</strong></span>
-                    </div>
-                </div>
-            </div>`;
+                     </div>
+                 </div>`;
             });
+
             document.getElementById('menu-container').innerHTML = html;
         }
 
@@ -1042,14 +954,8 @@
             let total = { cal: 0, p: 0, g: 0, l: 0 };
 
             validations.forEach(id => {
-                // Check normal meals
                 let repas = menu.repas.find(r => r.id === id);
-
-                // Check Vendredi special
-                if (!repas && id === 'repas3_vendredi') {
-                    repas = MENUS_BASE.vendredi.repas3;
-                }
-
+                if (!repas && id === 'repas3_vendredi') repas = MENUS_BASE.vendredi.repas3;
                 if (repas) {
                     total.cal += repas.calories;
                     total.p += repas.macros.P;
@@ -1061,7 +967,6 @@
             const grigJour = grignotages.filter(g => g.date === today);
             total.cal += grigJour.reduce((sum, g) => sum + g.calories, 0);
 
-            // Gestion objectif personnalisé
             const customGoal = localStorage.getItem('objectif-calories-' + jourType);
             const objectifCal = customGoal ? parseInt(customGoal) : config.calories[jourType];
 
@@ -1075,14 +980,13 @@
             document.getElementById('lip-total').textContent = config.macros[jourType].L;
 
             const pct = Math.min(100, Math.round((total.cal / objectifCal) * 100));
-            document.getElementById('progress-bar').style.width = pct + '%';
             document.getElementById('progress-bar').textContent = pct + '%';
+            document.getElementById('progress-bar-visual').style.width = pct + '%';
         }
 
         function editObjectifCalories() {
             const currentGoal = document.getElementById('cal-total').textContent;
-            const newGoal = prompt("Entrez votre nouvel objectif calorique pour les jours " + jourType.toUpperCase() + " :", currentGoal);
-
+            const newGoal = prompt("Nouvel objectif calorique :", currentGoal);
             if (newGoal && !isNaN(newGoal)) {
                 localStorage.setItem('objectif-calories-' + jourType, newGoal);
                 calculerProgression();
@@ -1092,10 +996,8 @@
         function calculerProgressionProgramme() {
             const num = parseInt(semaineActuelle.replace('S', ''));
             const pct = Math.min(100, Math.round((num / 10) * 100));
-
             const bar = document.getElementById('global-progress-bar');
             const label = document.getElementById('global-week-display');
-
             if (bar) bar.style.width = pct + '%';
             if (label) label.textContent = `${semaineActuelle}/10`;
         }
@@ -1105,13 +1007,10 @@
             const poidsDepart = 85;
             const objectifHebdo = 0.5;
             const numSemaine = parseInt(semaineActuelle.replace('S', ''));
-
             const objectifTheorique = poidsDepart - (objectifHebdo * (numSemaine - 1));
             const ecart = (dernierPoids - objectifTheorique).toFixed(1);
 
             document.getElementById('poids-actuel').textContent = dernierPoids + ' kg';
-            document.getElementById('poids-semaine').textContent = numSemaine;
-
             const ecartEl = document.getElementById('poids-ecart');
             if (ecartEl) {
                 ecartEl.textContent = (ecart > 0 ? '+' : '') + ecart + ' kg';
@@ -1122,65 +1021,33 @@
         function updatePoids() {
             const input = document.getElementById('poids-input');
             const nouveauPoids = parseFloat(input.value);
-
             if (!nouveauPoids || isNaN(nouveauPoids)) {
-                alert("Veuillez entrer un poids valide.");
+                alert("Poids invalide.");
                 return;
             }
-
             const today = new Date().toISOString().split('T')[0];
-
-            // Vérifier si une pesée existe déjà pour aujourd'hui
             const existingIndex = pesees.findIndex(p => p.date === today);
-            if (existingIndex > -1) {
-                pesees[existingIndex].poids = nouveauPoids;
-            } else {
-                pesees.push({ date: today, poids: nouveauPoids });
-            }
+            if (existingIndex > -1) pesees[existingIndex].poids = nouveauPoids;
+            else pesees.push({ date: today, poids: nouveauPoids });
 
             localStorage.setItem('pesees-hebdo', JSON.stringify(pesees));
             input.value = '';
             calculerSuiviPoids();
-            alert("Poids mis à jour !");
-        }
-
-        function createTimelineItems() {
-            let html = '';
-            for (let i = 1; i <= 10; i++) {
-                html += `<div class="timeline-item" onclick="afficherSemaine(${i})"
-                style="flex:0 0 auto; text-align:center; cursor:pointer; padding:5px;">
-                <div class="timeline-dot"
-                    style="width:30px; height:30px; background:var(--primary-light); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto;">
-                    S${i}</div>
-                <div class="timeline-label" style="font-size:10px; margin-top:4px;">Sem ${i}</div>
-                </div>`;
-            }
-            document.getElementById('timeline-items').innerHTML = html;
-        }
-
-        function afficherSemaine(num) {
-            semaineActuelle = 'S' + num;
-            afficherMenu();
-            calculerProgression();
-            calculerProgressionProgramme(); // Update global progress bar
-            document.querySelectorAll('.timeline-dot').forEach((el, idx) => {
-                el.style.background = (idx + 1) === num ? 'var(--primary)' : 'var(--primary-light)';
-            });
+            alert("Poids enregistré !");
         }
 
         function afficherStackSupplements() {
             let html = '';
             for (const [cat, items] of Object.entries(STACK_SUPPLEMENTS_COMPLET.basique)) {
-                html += `<div style="margin-bottom:15px;">
-                    <h4 style="color:var(--secondary); margin-bottom:5px;">${cat.toUpperCase()}</h4>
-                    <ul style="list-style:none;">`;
+                html += `<div style="margin-bottom: 20px;"><h4 style="color: var(--secondary); margin-bottom: 10px; text-transform: uppercase; font-size: 12px;">${cat}</h4>
+                     <ul style="list-style: none; background: #f8f9fa; padding: 15px; border-radius: 15px;">`;
                 for (const [name, det] of Object.entries(items)) {
-                    html += `<li style="font-size:13px; margin-bottom:4px;"><strong>${name}:</strong> ${det.dose}
-                                <span style="color:#888;">(${det.prix})</span>
-                            </li>`;
+                    html += `<li style="font-size: 14px; margin-bottom: 8px; display: flex; justify-content: space-between;">
+                            <span><strong>${name}</strong></span>
+                            <span>${det.dose} <span style="color: #b2bec3; font-size: 12px;">(${det.prix})</span></span>
+                         </li>`;
                 }
-                html += `</ul>
-                </div>`;
+                html += `</ul></div>`;
             }
             document.getElementById('supplements-container').innerHTML = html;
         }
