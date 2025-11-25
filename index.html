@@ -183,7 +183,8 @@
             justify-content: space-between;
             margin-bottom: 20px;
             background: white;
-            padding: 15px;
+            padding: 10px;
+            /* Reduced padding for mobile */
             border-radius: var(--radius);
             box-shadow: var(--shadow-soft);
         }
@@ -193,7 +194,9 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            width: 40px;
+            width: 13%;
+            /* Responsive width */
+            max-width: 40px;
         }
 
         .jour-badge span {
@@ -504,7 +507,7 @@
         const JOURS_SEMAINE = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
 
         const PLAN_HYBRIDE = {
-            dateDebut: localStorage.getItem('dateDebutProgramme') || '2024-01-01',
+            dateDebut: localStorage.getItem('dateDebutProgramme') || '2025-09-27',
             semaines: {}
         };
 
@@ -522,7 +525,7 @@
         const MENUS_BASE = {
             matin: {
                 nom: 'Hydratation & Éveil',
-                icon: 'assets/icon_morning.png',
+                icon: 'assets/icon_morning.svg',
                 heure: '07:30',
                 details: [
                     '💧 500ml Eau + Jus 1/2 citron',
@@ -535,7 +538,7 @@
                     {
                         id: 'repas1_train',
                         nom: 'Déjeuner Énergétique',
-                        icon: 'assets/icon_lunch.png',
+                        icon: 'assets/icon_lunch.svg',
                         heure: '12:00',
                         calories: 900,
                         macros: { P: 60, G: 90, L: 30 },
@@ -552,7 +555,7 @@
                     {
                         id: 'repas2_train',
                         nom: 'Récupération Musculaire',
-                        icon: 'assets/icon_snack.png',
+                        icon: 'assets/icon_snack.svg',
                         heure: '15:45',
                         calories: 600,
                         macros: { P: 40, G: 80, L: 10 },
@@ -567,7 +570,7 @@
                     {
                         id: 'repas3_train',
                         nom: 'Dîner Léger & Digestion',
-                        icon: 'assets/icon_dinner.png',
+                        icon: 'assets/icon_dinner.svg',
                         heure: '19:30',
                         calories: 800,
                         macros: { P: 50, G: 60, L: 35 },
@@ -588,7 +591,7 @@
                     {
                         id: 'repas1_repos',
                         nom: 'Déjeuner Équilibré',
-                        icon: 'assets/icon_lunch.png',
+                        icon: 'assets/icon_lunch.svg',
                         heure: '12:00',
                         calories: 700,
                         macros: { P: 50, G: 50, L: 30 },
@@ -604,7 +607,7 @@
                     {
                         id: 'repas2_repos',
                         nom: 'Collation Santé',
-                        icon: 'assets/icon_snack.png',
+                        icon: 'assets/icon_snack.svg',
                         heure: '16:00',
                         calories: 400,
                         macros: { P: 30, G: 40, L: 15 },
@@ -617,7 +620,7 @@
                     {
                         id: 'repas3_repos',
                         nom: 'Dîner Low-Carb',
-                        icon: 'assets/icon_dinner.png',
+                        icon: 'assets/icon_dinner.svg',
                         heure: '19:30',
                         calories: 600,
                         macros: { P: 45, G: 30, L: 30 },
@@ -634,7 +637,7 @@
                 repas3: {
                     id: 'repas3_vendredi',
                     nom: 'Plaisir Contrôlé (80/20)',
-                    icon: 'assets/icon_dinner.png',
+                    icon: 'assets/icon_dinner.svg',
                     heure: '20:00',
                     calories: 1200,
                     macros: { P: 40, G: 100, L: 50 },
@@ -743,6 +746,22 @@
                      </div>`;
             }
             document.getElementById('timeline-items').innerHTML = html;
+            setTimeout(scrollTimelineToActive, 100);
+        }
+
+        function scrollTimelineToActive() {
+            const wrapper = document.querySelector('.timeline-wrapper');
+            // Find the active item (opacity 1)
+            const items = document.querySelectorAll('.timeline-item');
+            let activeItem = null;
+            items.forEach(item => {
+                if (item.style.opacity === '1') activeItem = item;
+            });
+
+            if (activeItem && wrapper) {
+                const offset = activeItem.offsetLeft - (wrapper.clientWidth / 2) + (activeItem.clientWidth / 2);
+                wrapper.scrollTo({ left: offset, behavior: 'smooth' });
+            }
         }
 
         function afficherSemaine(num) {
@@ -859,7 +878,7 @@
                 html += `<div class="nutrition-section">
                         <div style="display: flex; justify-content: space-between; align-items: baseline;">
                             <h3 style="display:flex; align-items:center;">
-                                <img src="${currentRepas.icon || 'assets/icon_lunch.png'}" class="menu-icon">
+                                <img src="${currentRepas.icon || 'assets/icon_lunch.svg'}" class="menu-icon">
                                 ${currentRepas.heure} - ${currentRepas.nom}
                             </h3>
                             ${isVendrediSoir ? '<span style="font-size: 10px; background: #ffeaa7; padding: 4px 8px; border-radius: 10px;">🎉 80/20</span>' : ''}
@@ -1003,9 +1022,9 @@
         }
 
         function calculerSuiviPoids() {
-            const dernierPoids = pesees.length > 0 ? pesees[pesees.length - 1].poids : 85;
-            const poidsDepart = 85;
-            const objectifHebdo = 0.5;
+            const dernierPoids = pesees.length > 0 ? pesees[pesees.length - 1].poids : 94.3;
+            const poidsDepart = 94.3;
+            const objectifHebdo = (94.3 - 90) / 9; // Objectif 90kg semaine 10
             const numSemaine = parseInt(semaineActuelle.replace('S', ''));
             const objectifTheorique = poidsDepart - (objectifHebdo * (numSemaine - 1));
             const ecart = (dernierPoids - objectifTheorique).toFixed(1);
