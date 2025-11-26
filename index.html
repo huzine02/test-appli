@@ -341,6 +341,201 @@
         }
 
         .stat-value {
+            object-fit: contain;
+            margin-right: 10px;
+            vertical-align: middle;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .meal-details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .detail-label {
+            font-size: 10px;
+            color: var(--text-light);
+            font-weight: 400;
+            margin-bottom: 2px;
+        }
+
+        /* SEMAINIER */
+        .semainier {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: white;
+            padding: 10px;
+            /* Reduced padding for mobile */
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .jour-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            width: 13%;
+            /* Responsive width */
+            max-width: 40px;
+        }
+
+        .jour-badge span {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .jour-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #dfe6e9;
+            transition: 0.3s;
+        }
+
+        .jour-badge.training .jour-dot {
+            background: var(--primary);
+        }
+
+        .jour-badge.repos .jour-dot {
+            background: var(--secondary);
+        }
+
+        .jour-badge.today span {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        /* BOTTOM NAV */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height);
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+            z-index: 100;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #b2bec3;
+            font-size: 12px;
+            font-weight: 600;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* BUTTONS & INPUTS */
+        button {
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f1f2f6;
+            border-radius: 12px;
+            text-align: left;
+            font-size: 14px;
+            color: var(--text-light);
+            transition: 0.2s;
+        }
+
+        .option-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+
+        .validation-checkbox {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f1f2f6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .validation-checkbox.validated {
+            background: var(--success);
+            color: white;
+        }
+
+        /* PROGRESS BARS */
+        .progress-container {
+            background: #dfe6e9;
+            border-radius: 10px;
+            height: 10px;
+            width: 100%;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .stat-value {
             font-size: 24px;
             font-weight: 800;
             color: var(--primary);
@@ -349,6 +544,24 @@
         .stat-label {
             font-size: 12px;
             color: var(--text-light);
+        }
+
+        /* CHART */
+        .chart-svg {
+            width: 100%;
+            height: 200px;
+        }
+
+        /* GRIGNOTAGE */
+        .snack-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #fff5f0;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -375,35 +588,44 @@
             <!-- DASHBOARD TAB -->
             <div id="tab-dashboard" class="tab-content">
                 <div class="card">
-                    <h3>📊 Progression Programme</h3>
-                    <div class="progress-container" style="height: 20px; margin-top: 15px;">
-                        <div id="global-progress-bar" class="progress-bar" style="width: 0%"></div>
+                    <h3>📊 Progression & Poids</h3>
+                    <div class="chart-container" id="chart-poids" style="height: 200px; margin: 15px 0;">
+                        <svg class="chart-svg" id="svg-poids"></svg>
                     </div>
-                    <div style="text-align: right; font-size: 12px; margin-top: 5px; color: var(--text-light);">
-                        Semaine <span id="global-week-display">1/10</span>
-                    </div>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value" id="poids-actuel">-- kg</div>
-                        <div class="stat-label">Poids Actuel</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="poids-ecart" style="color: var(--success);">--</div>
-                        <div class="stat-label">Écart Objectif</div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="poids-actuel">-- kg</div>
+                            <div class="stat-label">Actuel</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="poids-objectif">-- kg</div>
+                            <div class="stat-label">Objectif Semaine</div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>⚖️ Nouvelle Pesée</h3>
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <input type="number" id="poids-input" placeholder="Poids en kg" step="0.1"
-                            style="flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #dfe6e9; font-size: 16px;">
-                        <button onclick="updatePoids()"
-                            style="background: var(--primary); color: white; padding: 0 20px; border-radius: 12px; font-weight: 700;">OK</button>
+                    <h3>⚖️ Saisie Pesée Complète</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                        <input type="number" id="input-poids" placeholder="Poids (kg)" step="0.1" class="option-btn"
+                            style="background: white; border: 1px solid #dfe6e9; margin:0;">
+                        <input type="number" id="input-bf" placeholder="% Graisse" step="0.1" class="option-btn"
+                            style="background: white; border: 1px solid #dfe6e9; margin:0;">
                     </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                        <input type="number" id="input-taille" placeholder="Taille (cm)" step="0.5" class="option-btn"
+                            style="background: white; border: 1px solid #dfe6e9; margin:0;">
+                        <input type="number" id="input-energie" placeholder="Énergie (1-10)" min="1" max="10"
+                            class="option-btn" style="background: white; border: 1px solid #dfe6e9; margin:0;">
+                    </div>
+                    <textarea id="input-notes-pesee" placeholder="Notes (sensations, digestion...)"
+                        style="width: 100%; padding: 10px; border-radius: 12px; border: 1px solid #dfe6e9; margin-top: 10px; font-family: inherit; resize: none;"></textarea>
+                    <button onclick="enregistrerPesee()"
+                        style="width: 100%; background: var(--primary); color: white; padding: 12px; border-radius: 12px; font-weight: 700; margin-top: 10px;">Enregistrer
+                        Pesée</button>
                 </div>
+
+                <div id="historique-pesees"></div>
             </div>
 
             <!-- TRAINING TAB (Active by default) -->
@@ -444,6 +666,20 @@
                     </div>
                 </div>
 
+                <div class="card">
+                    <h3>🍪 Grignotages & Écarts</h3>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <input type="text" id="input-snack-nom" placeholder="Quoi ?"
+                            style="flex: 2; padding: 10px; border-radius: 10px; border: 1px solid #dfe6e9;">
+                        <input type="number" id="input-snack-cal" placeholder="Kcal"
+                            style="flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #dfe6e9;">
+                    </div>
+                    <button onclick="ajouterGrignotage()"
+                        style="width: 100%; background: var(--secondary); color: white; padding: 10px; border-radius: 10px; font-weight: 700; margin-top: 10px;">+
+                        Ajouter</button>
+                    <div id="liste-grignotages" style="margin-top: 15px;"></div>
+                </div>
+
                 <div id="menu-container">
                     <!-- JS Injected -->
                 </div>
@@ -476,6 +712,20 @@
                         <!-- JS Injected -->
                     </div>
                 </div>
+
+                <div class="card">
+                    <h3>💾 Sauvegarde & Données</h3>
+                    <p style="font-size: 12px; color: var(--text-light); margin-bottom: 15px;">Sauvegardez vos données
+                        pour ne pas les perdre.</p>
+                    <button onclick="telechargerBackup()"
+                        style="width: 100%; background: var(--success); color: white; padding: 12px; border-radius: 12px; font-weight: 700; margin-bottom: 10px;">⬇️
+                        Télécharger Backup</button>
+                    <button onclick="document.getElementById('input-restore').click()"
+                        style="width: 100%; background: var(--text-light); color: white; padding: 12px; border-radius: 12px; font-weight: 700;">⬆️
+                        Restaurer Backup</button>
+                    <input type="file" id="input-restore" accept=".json" style="display: none;"
+                        onchange="restaurerBackup(event)">
+                </div>
             </div>
         </main>
     </div>
@@ -507,82 +757,65 @@
         const JOURS_SEMAINE = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
 
         const PLAN_HYBRIDE = {
-            dateDebut: localStorage.getItem('dateDebutProgramme') || '2025-09-27',
-            semaines: {}
+            dateDebut: localStorage.getItem('dateDebutProgramme') || new Date().toISOString().split('T')[0],
+            poidsInitial: 93.4,
+            semaines: {
+                S1: { phase: 'seche', nom: 'Sèche S1', objectif: 'Kickstart sèche intensive', calories: { training: 2580, repos: 2100 }, macros: { training: { P: 240, G: 250, L: 75 }, repos: { P: 240, G: 160, L: 75 } }, deficitCible: 420, perteVisee: 0.7 },
+                S2: { phase: 'seche', nom: 'Sèche S2', objectif: 'Accélération perte gras', calories: { training: 2580, repos: 2100 }, macros: { training: { P: 240, G: 250, L: 75 }, repos: { P: 240, G: 160, L: 75 } }, deficitCible: 420, perteVisee: 0.7 },
+                S3: { phase: 'seche', nom: 'Sèche S3', objectif: 'Momentum optimal', calories: { training: 2580, repos: 2100 }, macros: { training: { P: 240, G: 250, L: 75 }, repos: { P: 240, G: 160, L: 75 } }, deficitCible: 420, perteVisee: 0.7 },
+                S4: { phase: 'seche', nom: 'Sèche S4', objectif: 'Finalisation phase 1', calories: { training: 2580, repos: 2100 }, macros: { training: { P: 240, G: 250, L: 75 }, repos: { P: 240, G: 160, L: 75 } }, deficitCible: 420, perteVisee: 0.7 },
+                S5: { phase: 'deload', nom: 'Deload', objectif: 'Récupération métabolique', calories: { training: 2750, repos: 2350 }, macros: { training: { P: 230, G: 280, L: 85 }, repos: { P: 220, G: 200, L: 95 } }, deficitCible: 400, perteVisee: 0.3 },
+                S6: { phase: 'seche', nom: 'Sèche S6', objectif: 'Reprise intensité', calories: { training: 2580, repos: 2100 }, macros: { training: { P: 240, G: 250, L: 75 }, repos: { P: 240, G: 160, L: 75 } }, deficitCible: 420, perteVisee: 0.7 },
+                S7: { phase: 'seche', nom: 'Sèche S7', objectif: 'Continuation sèche', calories: { training: 2580, repos: 2100 }, macros: { training: { P: 240, G: 250, L: 75 }, repos: { P: 240, G: 160, L: 75 } }, deficitCible: 420, perteVisee: 0.7 },
+                S8: { phase: 'seche', nom: 'Sèche S8', objectif: 'Phase finale approche', calories: { training: 2580, repos: 2100 }, macros: { training: { P: 240, G: 250, L: 75 }, repos: { P: 240, G: 160, L: 75 } }, deficitCible: 420, perteVisee: 0.7 },
+                S9: { phase: 'seche', nom: 'Sèche S9', objectif: 'Dernière ligne droite', calories: { training: 2580, repos: 2100 }, macros: { training: { P: 240, G: 250, L: 75 }, repos: { P: 240, G: 160, L: 75 } }, deficitCible: 420, perteVisee: 0.7 },
+                S10: { phase: 'finale', nom: 'Finale', objectif: 'Bilan final & transition', calories: { training: 2580, repos: 2100 }, macros: { training: { P: 240, G: 250, L: 75 }, repos: { P: 240, G: 160, L: 75 } }, deficitCible: 420, perteVisee: 0.5 }
+            }
         };
-
-        for (let i = 1; i <= 10; i++) {
-            PLAN_HYBRIDE.semaines['S' + i] = {
-                nom: i <= 4 ? 'Phase Adaptation' : 'Phase Intensive',
-                calories: { training: 2800, repos: 2400 },
-                macros: {
-                    training: { P: 200, G: 300, L: 80 },
-                    repos: { P: 200, G: 200, L: 90 }
-                }
-            };
-        }
 
         const MENUS_BASE = {
             matin: {
                 nom: 'Hydratation & Éveil',
                 icon: 'assets/icon_morning.svg',
                 heure: '07:30',
-                details: [
-                    '💧 500ml Eau + Jus 1/2 citron',
-                    '☕ Café Noir (Sans sucre)',
-                    '💊 Créatine : 5g (Indispensable)'
-                ]
+                details: ['💧 500ml Eau + Jus 1/2 citron', '☕ Café Noir', '💊 Créatine : 5g', '💊 Vitamine D3 : 5000 UI']
             },
             training: {
                 repas: [
                     {
-                        id: 'repas1_train',
-                        nom: 'Déjeuner Énergétique',
-                        icon: 'assets/icon_lunch.svg',
+                        id: 'repas1_training',
+                        nom: 'REPAS 1 - Pré-Training',
                         heure: '12:00',
-                        calories: 900,
-                        macros: { P: 60, G: 90, L: 30 },
-                        desc: 'Le plus gros repas. Protéines + Glucides + Légumes.',
-                        complements: ['Vitamine D3 + K2', 'Multivitamine', 'Oméga-3 (sauf si poisson)', 'Berbérine'],
-                        assiette: [
-                            '🍗 Protéine (170g) : Poulet / Poisson Blanc / Steak 5%',
-                            '🍚 Féculent (270g cuit) : Riz Basmati / Pâtes / Patates',
-                            '🥦 Légumes (300g) : Brocolis / Haricots / Courgettes',
-                            '🫒 Lipides : 20ml Huile Olive (Crue)',
-                            '🍎 Fruit : 1 Pomme ou Poire'
-                        ]
-                    },
-                    {
-                        id: 'repas2_train',
-                        nom: 'Récupération Musculaire',
-                        icon: 'assets/icon_snack.svg',
-                        heure: '15:45',
-                        calories: 600,
-                        macros: { P: 40, G: 80, L: 10 },
-                        desc: 'Juste après le sport. Anti-Cortisol.',
-                        complements: ['Glycine (3-5g) optionnel'],
-                        prefKey: 'collation-training',
+                        calories: 1060,
+                        macros: { P: 78, G: 141, L: 22 },
+                        note: '⏰ Finir 1h45 avant training',
                         options: [
-                            { id: 'A', nom: 'Option A - Clean', aliments: ['🥤 Whey Isolate (40g)', '🍌 1.5 Banane', '🥣 Avoine Poudre (40g)', '🍓 Fruits Rouges (100g)'] },
-                            { id: 'B', nom: 'Option B - Pressé', aliments: ['🥤 Danone HiPro Vanille', '🍌 2 Bananes', '🥜 20g Amandes'] }
-                        ]
-                    },
-                    {
-                        id: 'repas3_train',
-                        nom: 'Dîner Léger & Digestion',
-                        icon: 'assets/icon_dinner.svg',
-                        heure: '19:30',
-                        calories: 800,
-                        macros: { P: 50, G: 60, L: 35 },
-                        desc: 'Digestion & Sommeil.',
-                        complements: ['Magnésium (400mg)', 'Zinc (15mg)', 'Oméga-3'],
-                        prefKey: 'diner-training',
-                        options: [
-                            { id: 'A', nom: 'Option A - Saumon', aliments: ['🐟 Saumon (150g)', '🍠 Patate Douce (180g)', '🥗 Légumes à volonté', '❌ Pas d\'huile ajoutée'] },
-                            { id: 'B', nom: 'Option B - Poulet', aliments: ['🍗 Cuisse Poulet (200g)', '🍚 Riz Basmati (180g)', '🥗 Légumes à volonté', '❌ Pas d\'huile ajoutée'] },
-                            { id: 'C', nom: 'Option C - Œufs', aliments: ['🥚 3 Œufs + 1 Blanc', '🌾 Quinoa (180g)', '🥗 Légumes', '🫒 10ml Huile'] }
+                            { id: 'A', nom: 'Option A - Poulet-Riz', aliments: ['🍗 Poulet grillé : 200g cuit', '🍚 Riz basmati : 270g cuit', '🥦 Légumes : 300g', '🫒 Huile olive : 15ml', '🍌 Banane : 1', '🍎 Pomme : 1'] },
+                            { id: 'B', nom: 'Option B - Dinde-Quinoa', aliments: ['🦃 Escalope dinde : 200g cuit', '🌾 Quinoa : 255g cuit', '🥦 Haricots verts : 350g', '🫒 Huile olive : 15ml', '🍌 Banane : 1', '🍊 Orange : 1'] }
                         ],
-                        dessert: 'Skyr 0% (200g) + Miel (15g) + Framboises'
+                        supplements: ['💊 ARTICULATIONS : Glucosamine, Chondroïtine, MSM', '✅ Créatine 5g (si pas pris matin)'],
+                        antiInflammatoires: ['🌿 Curcuma frais', '🫚 Gingembre frais']
+                    },
+                    {
+                        id: 'repas2_training',
+                        nom: 'REPAS 2 - Post-Training',
+                        heure: '15:45',
+                        calories: 860,
+                        macros: { P: 62, G: 148, L: 5 },
+                        note: '⏰ 30 min post-training MAX',
+                        aliments: ['💪 SHAKER :', 'Whey isolate : 60g', 'Bananes : 3', 'Flocons avoine : 40g', 'Jus cerise : 150ml', 'Myrtilles : 100g', 'Miel : 10g']
+                    },
+                    {
+                        id: 'repas3_training',
+                        nom: 'REPAS 3 - Final',
+                        heure: '19:30',
+                        calories: 715,
+                        macros: { P: 46, G: 54, L: 34 },
+                        options: [
+                            { id: 'A', nom: 'Option A - Saumon-Riz', aliments: ['🐟 Saumon : 150g cuit', '🍚 Riz : 150g cuit', '🥗 Salade : 300g', '🫒 Huile olive : 15ml', '🌰 Graines lin : 15g'] },
+                            { id: 'B', nom: 'Option B - Poulet-Patate', aliments: ['🍗 Poulet : 160g cuit', '🍠 Patate douce : 180g cuite', '🥗 Salade : 300g', '🫒 Huile olive : 20ml'] }
+                        ],
+                        supplements: ['💊 SOIR : Oméga-3, Magnésium, Zinc, Glycine']
                     }
                 ]
             },
@@ -590,46 +823,38 @@
                 repas: [
                     {
                         id: 'repas1_repos',
-                        nom: 'Déjeuner Équilibré',
-                        icon: 'assets/icon_lunch.svg',
+                        nom: 'REPAS 1',
                         heure: '12:00',
-                        calories: 700,
-                        macros: { P: 50, G: 50, L: 30 },
-                        complements: ['Vitamine D3 + K2', 'Multivitamine', 'Oméga-3'],
-                        assiette: [
-                            '🍗 Protéine (170g) : Volaille / Steak / Poisson',
-                            '🍚 Féculent (200g cuit) : Portion réduite',
-                            '🥦 Légumes (300g min)',
-                            '🫒 Lipides : 20ml Huile Olive',
-                            '🍎 Fruit : 1 Pomme'
-                        ]
+                        calories: 935,
+                        macros: { P: 76, G: 100, L: 27 },
+                        options: [
+                            { id: 'A', nom: 'Option A - Poulet-Riz', aliments: ['🍗 Poulet : 200g cuit', '🍚 Riz : 210g cuit', '🥦 Légumes : 400g', '🫒 Huile olive : 20ml', '🍎 Pomme : 1'] },
+                            { id: 'B', nom: 'Option B - Dinde-Quinoa', aliments: ['🦃 Dinde : 200g cuit', '🌾 Quinoa : 195g cuit', '🥦 Légumes : 400g', '🫒 Huile olive : 20ml', '🍊 Orange : 1'] }
+                        ],
+                        supplements: ['💊 ARTICULATIONS : Glucosamine, MSM, Boswellia']
                     },
                     {
                         id: 'repas2_repos',
-                        nom: 'Collation Santé',
-                        icon: 'assets/icon_snack.svg',
+                        nom: 'COLLATION',
                         heure: '16:00',
-                        calories: 400,
-                        macros: { P: 30, G: 40, L: 15 },
-                        prefKey: 'collation-repos',
+                        calories: 405,
+                        macros: { P: 30, G: 49, L: 11 },
                         options: [
-                            { id: 'A', nom: 'Option A - Plaisir (2x max)', aliments: ['🍞 2 Pains Complets + 25g Beurre Cacahuète', '🍌 1/2 Banane', '🥤 Petit shake si faim'] },
-                            { id: 'B', nom: 'Option B - Santé', aliments: ['🍶 Skyr (200g)', '🥜 25g Amandes/Noix', '🥝 1 Fruit (Kiwi/Pomme)'] }
+                            { id: 'A', nom: 'Option A - Skyr', aliments: ['🍶 Skyr 0% : 250g', '🍌 Banane : 1', '🥜 Amandes : 20g', '🍯 Miel : 10g'] },
+                            { id: 'B', nom: 'Option B - Œufs', aliments: ['🥚 Œufs durs : 3', '🍌 Banane : 1', '🌰 Noix : 20g', '🍎 Pomme : 1'] }
                         ]
                     },
                     {
                         id: 'repas3_repos',
-                        nom: 'Dîner Low-Carb',
-                        icon: 'assets/icon_dinner.svg',
+                        nom: 'REPAS 3 - Soir',
                         heure: '19:30',
-                        calories: 600,
-                        macros: { P: 45, G: 30, L: 30 },
-                        complements: ['Magnésium', 'Zinc'],
+                        calories: 765,
+                        macros: { P: 47, G: 55, L: 39 },
                         options: [
-                            { id: 'A', nom: 'Option A - Standard', aliments: ['🐟 Protéine (150g) : Saumon/Sardines/Œufs', '🍚 Féculent (120g) : Portion légère', '🥗 Légumes à volonté'] },
-                            { id: 'B', nom: 'Option B - Léger', aliments: ['🥗 Grande Salade Composée', '🐟 Thon/Maquereau', '🥑 1/2 Avocat'] }
+                            { id: 'A', nom: 'Option A - Saumon', aliments: ['🐟 Saumon : 150g cuit', '🍠 Patate douce : 200g', '🥗 Salade : 350g', '🫒 Huile olive : 20ml'] },
+                            { id: 'B', nom: 'Option B - Poulet', aliments: ['🍗 Poulet : 160g cuit', '🥔 Pommes terre : 200g', '🥦 Légumes : 400g', '🫒 Huile olive : 25ml'] }
                         ],
-                        dessert: 'Skyr nature + Cannelle (Pas de miel)'
+                        supplements: ['💊 SOIR : Oméga-3, Magnésium, Zinc']
                     }
                 ]
             },
@@ -637,16 +862,10 @@
                 repas3: {
                     id: 'repas3_vendredi',
                     nom: 'Plaisir Contrôlé (80/20)',
-                    icon: 'assets/icon_dinner.svg',
                     heure: '20:00',
-                    calories: 1200,
-                    macros: { P: 40, G: 100, L: 50 },
-                    desc: 'Repas plaisir contrôlé.',
-                    aliments: [
-                        '🥗 Entrée : Salade verte + Vinaigre (Obligatoire)',
-                        '🍟 Plat : Steak/Poulet + 300g Frites Maison (Air Fryer)',
-                        '🍫 Dessert : Chocolat Noir ou Fruit'
-                    ]
+                    calories: 875,
+                    macros: { P: 73, G: 76, L: 30 },
+                    aliments: ['🥗 Salade verte (200g) en premier', '🥩 Viande (200g)', '🍟 Frites Air Fryer (350g crues)', '⚠️ +160kcal vs repas normal']
                 }
             }
         };
@@ -694,10 +913,13 @@
             afficherSemainier();
             renderConfigJours();
             checkDayAuto();
+            loadGrignotages(); // NEW
             afficherMenu();
             calculerProgression();
             calculerProgressionProgramme();
             calculerSuiviPoids();
+            afficherGraphiquePoids(); // NEW
+            afficherHistoriquePesees(); // NEW
             afficherStackSupplements();
         };
 
@@ -891,9 +1113,9 @@
                             <div class="detail-item"><span class="stat-value" style="font-size: 16px;">${currentRepas.macros.L}</span><span class="detail-label">Lip</span></div>
                         </div>
 
-                        ${currentRepas.desc ? `<p style="font-size: 13px; color: var(--text-light); margin-bottom: 15px; font-style: italic;">${currentRepas.desc}</p>` : ''}
-
-                        ${currentRepas.complements ? `<div style="margin-bottom: 15px; font-size: 13px; background: #eef2f3; padding: 10px; border-radius: 10px;"><strong>💊 Compléments:</strong> ${currentRepas.complements.join(', ')}</div>` : ''}
+                        ${currentRepas.note ? `<p style="font-size: 13px; color: var(--text-light); margin-bottom: 15px; font-style: italic;">${currentRepas.note}</p>` : ''}
+                        ${currentRepas.supplements ? `<div style="margin-bottom: 15px; font-size: 13px; background: #eef2f3; padding: 10px; border-radius: 10px;"><strong>💊 Compléments:</strong> ${currentRepas.supplements.join(', ')}</div>` : ''}
+                        ${currentRepas.antiInflammatoires ? `<div style="margin-bottom: 15px; font-size: 13px; background: #eef2f3; padding: 10px; border-radius: 10px;"><strong>🌿 Anti-inflammatoires:</strong> ${currentRepas.antiInflammatoires.join(', ')}</div>` : ''}
                         `;
 
                 // OPTIONS / ASSIETTE
@@ -968,20 +1190,40 @@
             const menu = MENUS_BASE[jourType];
             const config = PLAN_HYBRIDE.semaines[semaineActuelle] || PLAN_HYBRIDE.semaines['S1'];
             const today = new Date().toISOString().split('T')[0];
-            const validations = JSON.parse(localStorage.getItem(`repas-${today}`) || '[]');
+            const validations = JSON.parse(localStorage.getItem(`repas-${today}`) || '[]').filter(id => id !== 'repas3_vendredi'); // Filter out vendredi special meal for macro calculation
 
             let total = { cal: 0, p: 0, g: 0, l: 0 };
 
             validations.forEach(id => {
                 let repas = menu.repas.find(r => r.id === id);
-                if (!repas && id === 'repas3_vendredi') repas = MENUS_BASE.vendredi.repas3;
                 if (repas) {
-                    total.cal += repas.calories;
-                    total.p += repas.macros.P;
-                    total.g += repas.macros.G;
-                    total.l += repas.macros.L;
+                    // If options exist, use the selected option's macros if available, otherwise default to first option or main macros
+                    if (repas.options) {
+                        const optionKey = `${today}-${repas.id}`;
+                        const selectedOptionId = optionsSelectionnees[optionKey] || repas.options[0].id;
+                        const selectedOption = repas.options.find(opt => opt.id === selectedOptionId);
+                        // For now, we don't have macros per option, so we use the main meal macros
+                        total.cal += repas.calories;
+                        total.p += repas.macros.P;
+                        total.g += repas.macros.G;
+                        total.l += repas.macros.L;
+                    } else {
+                        total.cal += repas.calories;
+                        total.p += repas.macros.P;
+                        total.g += repas.macros.G;
+                        total.l += repas.macros.L;
+                    }
                 }
             });
+
+            // Handle vendredi special meal separately if validated
+            if (isRepasValide('repas3_vendredi')) {
+                const vendrediRepas = MENUS_BASE.vendredi.repas3;
+                total.cal += vendrediRepas.calories;
+                total.p += vendrediRepas.macros.P;
+                total.g += vendrediRepas.macros.G;
+                total.l += vendrediRepas.macros.L;
+            }
 
             const grigJour = grignotages.filter(g => g.date === today);
             total.cal += grigJour.reduce((sum, g) => sum + g.calories, 0);
@@ -1022,37 +1264,31 @@
         }
 
         function calculerSuiviPoids() {
-            const dernierPoids = pesees.length > 0 ? pesees[pesees.length - 1].poids : 94.3;
-            const poidsDepart = 94.3;
-            const objectifHebdo = (94.3 - 90) / 9; // Objectif 90kg semaine 10
+            const dernierPoids = pesees.length > 0 ? pesees[pesees.length - 1].poids : PLAN_HYBRIDE.poidsInitial;
+            const poidsDepart = PLAN_HYBRIDE.poidsInitial;
+
             const numSemaine = parseInt(semaineActuelle.replace('S', ''));
+            const configSemaine = PLAN_HYBRIDE.semaines[semaineActuelle];
+
+            let objectifPoidsFinal = poidsDepart;
+            for (let i = 1; i <= 10; i++) {
+                const s = PLAN_HYBRIDE.semaines['S' + i];
+                objectifPoidsFinal -= s.perteVisee;
+            }
+
+            const objectifHebdo = (poidsDepart - objectifPoidsFinal) / 10; // Average weekly loss
             const objectifTheorique = poidsDepart - (objectifHebdo * (numSemaine - 1));
+
             const ecart = (dernierPoids - objectifTheorique).toFixed(1);
 
             document.getElementById('poids-actuel').textContent = dernierPoids + ' kg';
+            document.getElementById('poids-objectif').textContent = objectifTheorique.toFixed(1) + ' kg';
+
             const ecartEl = document.getElementById('poids-ecart');
             if (ecartEl) {
                 ecartEl.textContent = (ecart > 0 ? '+' : '') + ecart + ' kg';
                 ecartEl.style.color = ecart <= 0 ? '#00b894' : '#ff7675';
             }
-        }
-
-        function updatePoids() {
-            const input = document.getElementById('poids-input');
-            const nouveauPoids = parseFloat(input.value);
-            if (!nouveauPoids || isNaN(nouveauPoids)) {
-                alert("Poids invalide.");
-                return;
-            }
-            const today = new Date().toISOString().split('T')[0];
-            const existingIndex = pesees.findIndex(p => p.date === today);
-            if (existingIndex > -1) pesees[existingIndex].poids = nouveauPoids;
-            else pesees.push({ date: today, poids: nouveauPoids });
-
-            localStorage.setItem('pesees-hebdo', JSON.stringify(pesees));
-            input.value = '';
-            calculerSuiviPoids();
-            alert("Poids enregistré !");
         }
 
         function afficherStackSupplements() {
@@ -1069,6 +1305,132 @@
                 html += `</ul></div>`;
             }
             document.getElementById('supplements-container').innerHTML = html;
+        }
+
+        // --- NEW FUNCTIONS ---
+
+        function ajouterGrignotage() {
+            const nom = document.getElementById('input-snack-nom').value;
+            const cal = parseInt(document.getElementById('input-snack-cal').value);
+            if (nom && cal) {
+                grignotages.push({ id: Date.now(), date: new Date().toISOString().split('T')[0], nom, cal });
+                localStorage.setItem('grignotages', JSON.stringify(grignotages));
+                document.getElementById('input-snack-nom').value = '';
+                document.getElementById('input-snack-cal').value = '';
+                loadGrignotages();
+                calculerProgression();
+            }
+        }
+
+        function loadGrignotages() {
+            const today = new Date().toISOString().split('T')[0];
+            const list = document.getElementById('liste-grignotages');
+            if (!list) return;
+            const snacks = grignotages.filter(g => g.date === today);
+            list.innerHTML = snacks.map(s => `
+                <div class="snack-item">
+                    <span>${s.nom}</span>
+                    <strong>${s.cal} kcal</strong>
+                </div>
+            `).join('');
+        }
+
+        function enregistrerPesee() {
+            const poids = parseFloat(document.getElementById('input-poids').value);
+            const bf = parseFloat(document.getElementById('input-bf').value);
+            const taille = parseFloat(document.getElementById('input-taille').value);
+            const energie = document.getElementById('input-energie').value;
+            const notes = document.getElementById('input-notes-pesee').value;
+
+            if (!poids) return alert('Poids requis');
+
+            const pesee = {
+                date: new Date().toISOString().split('T')[0],
+                semaine: semaineActuelle,
+                poids, bf, taille, energie, notes
+            };
+
+            const existingIdx = pesees.findIndex(p => p.date === pesee.date);
+            if (existingIdx > -1) pesees[existingIdx] = pesee;
+            else pesees.push(pesee);
+
+            pesees.sort((a, b) => new Date(a.date) - new Date(b.date));
+            localStorage.setItem('pesees-hebdo', JSON.stringify(pesees));
+
+            alert('Pesée enregistrée !');
+            calculerSuiviPoids();
+            afficherGraphiquePoids();
+            afficherHistoriquePesees();
+        }
+
+        function afficherGraphiquePoids() {
+            const svg = document.getElementById('svg-poids');
+            if (!svg || pesees.length < 2) {
+                if (svg) svg.innerHTML = '<text x="50%" y="50%" text-anchor="middle" fill="#ccc">Ajoutez au moins 2 pesées</text>';
+                return;
+            }
+
+            const width = svg.clientWidth;
+            const height = svg.clientHeight;
+            const padding = 20;
+
+            const minP = Math.min(...pesees.map(p => p.poids)) - 1;
+            const maxP = Math.max(...pesees.map(p => p.poids)) + 1;
+
+            const points = pesees.map((p, i) => {
+                const x = padding + (i / (pesees.length - 1)) * (width - 2 * padding);
+                const y = height - padding - ((p.poids - minP) / (maxP - minP)) * (height - 2 * padding);
+                return `${x},${y}`;
+            }).join(' ');
+
+            svg.innerHTML = `
+                <polyline points="${points}" fill="none" stroke="var(--primary)" stroke-width="3" />
+                ${pesees.map((p, i) => {
+                const x = padding + (i / (pesees.length - 1)) * (width - 2 * padding);
+                const y = height - padding - ((p.poids - minP) / (maxP - minP)) * (height - 2 * padding);
+                return `<circle cx="${x}" cy="${y}" r="4" fill="white" stroke="var(--primary)" stroke-width="2" />`;
+            }).join('')}
+            `;
+        }
+
+        function afficherHistoriquePesees() {
+            const container = document.getElementById('historique-pesees');
+            if (!container) return;
+            container.innerHTML = pesees.slice().reverse().map(p => `
+                <div style="background: white; padding: 10px; border-radius: 10px; margin-top: 10px; font-size: 13px; display: flex; justify-content: space-between;">
+                    <span>📅 ${new Date(p.date).toLocaleDateString('fr-FR')}</span>
+                    <strong>${p.poids} kg</strong>
+                </div>
+            `).join('');
+        }
+
+        function telechargerBackup() {
+            const data = {
+                pesees, grignotages, optionsSelectionnees, planningHebdo, preferencesMenu,
+                dateDebut: PLAN_HYBRIDE.dateDebut
+            };
+            const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'nutri-track-backup.json';
+            a.click();
+        }
+
+        function restaurerBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const data = JSON.parse(e.target.result);
+                localStorage.setItem('pesees-hebdo', JSON.stringify(data.pesees));
+                localStorage.setItem('grignotages', JSON.stringify(data.grignotages));
+                localStorage.setItem('options-repas', JSON.stringify(data.optionsSelectionnees));
+                localStorage.setItem('planningHebdo', JSON.stringify(data.planningHebdo));
+                localStorage.setItem('dateDebutProgramme', data.dateDebut);
+                location.reload();
+            };
+            reader.readAsText(file);
         }
     </script>
 </body>
